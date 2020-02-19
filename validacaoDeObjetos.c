@@ -6,14 +6,14 @@
 int estaFuncaoValidaProdutos (char produtos[]) {
     
     int i, validacao=1, caracteresLidos=0;
-    
     for (i=0; produtos[i]; i++) {
-        if (caracteresLidos > 6) validacao=0; //verificar sem são menos
+        if (caracteresLidos> 6) validacao=0;
         if (!isalpha(produtos[0]) || produtos[0]<'A' || produtos[0]>'Z' || produtos[1]<'A' || produtos[1]>'Z') validacao=0;
         if (produtos[2]!='1') validacao=0;
         if (i>=2 && !isdigit(produtos[i])) validacao=0;
         caracteresLidos++;
     }
+    if (caracteresLidos != 6) validacao=0;
     printf("%d\n", validacao);
     return validacao;
 }
@@ -22,7 +22,6 @@ int estaFuncaoValidaProdutos (char produtos[]) {
 int estaFuncaoValidaClientes (char clientes[]) {
     
     int i, validacao=1, caracteresLidos=0;
-    
     for (i=0; clientes[i]; i++) {
         if (caracteresLidos> 5) validacao=0;
         if (!isalpha(clientes[0]) || clientes[0]<'A' || clientes[0]>'Z') validacao=0;
@@ -31,6 +30,7 @@ int estaFuncaoValidaClientes (char clientes[]) {
         if (clientes[1]=='5' && (clientes[2]!='0' || clientes[2]!='0' || clientes[2]!='0')) validacao=0;
         caracteresLidos++;
     }
+    if (caracteresLidos != 5) validacao=0;
     printf("%d\n", validacao);
     return validacao;
 }
