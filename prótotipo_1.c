@@ -21,3 +21,5 @@ int PraAnalisarFicheiro (){
 	return(0);
 }
 
+char*produto = strtok(buf,"_");
+     preco = strtok(NULL,"_");
