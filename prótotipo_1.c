@@ -30,7 +30,7 @@ int ValidaC (char clientes[]) {
         if (!isalpha(clientes[0]) || clientes[0]<'A' || clientes[0]>'Z') validacao=0;
         if (i>=1 && !isdigit(clientes[i])) validacao=0;
         if (clientes[1]<'1' || clientes[1]>'5' ) validacao=0;
-        if (clientes[1]=='5' && (clientes[2]!='0' || clientes[2]!='0' || clientes[2]!='0')) validacao=0;
+        if (clientes[1]=='5' && (clientes[2]!='0' || clientes[3]!='0' || clientes[4]!='0')) validacao=0;
         caracteresLidos++;
     }
     if (caracteresLidos != 5) validacao=0;
