@@ -35,10 +35,67 @@ int estaFuncaoValidaClientes (char clientes[]) {
     return validacao;
 }
 
+int estaFuncaoValidaVendas (char vendas[]) {
+    
+    int validacao=1, iteracoes=1;
+    char *subString;
+    subString = strtok(vendas, " ");
+    if (!estaFuncaoValidaProdutos(subString)) {
+        return 0;
+    }
+    while (subString!=NULL) {
+        subString = strtok(NULL, " ");
+        if (iteracoes==1) {
+            long double precoUnit = atof (subString);
+            if (precoUnit<0 || precoUnit>=1000) {
+                validacao=0;
+                break;
+            }
+        }
+        if (iteracoes==2) {
+            double unidades = atof (subString);
+            if (unidades<1 || unidades>200) {
+                validacao=0;
+                break;
+            }
+        }
+        if (iteracoes==3) {
+            if ((strcmp (subString, "P") || (strcmp (subString, "N")))==0) {
+                validacao=0;
+                break;
+            }
+        }
+        if (iteracoes==4) {
+            if(!estaFuncaoValidaClientes(subString)) {
+                validacao=0;
+                break;
+            }
+        }
+        if (iteracoes==5) {
+            double mes = atof (subString);
+            if (mes<1 || mes>12) {
+                validacao=0;
+                break;
+            }
+        }
+        if (iteracoes==6) {
+            double filial = atof (subString);
+            if (filial<1 || filial>3) {
+                validacao=0;
+                break;
+            }
+        }
+        iteracoes++;
+    }
+    
+    printf("%d\n\n", validacao);
+    return validacao;
+}
+
 int main () {
     
-    char clientes[5] = "A6000";
-    estaFuncaoValidaClientes(clientes);
+    char vendas[5] = "KR1583 77.72 128 P L4891 2 1";
+    estaFuncaoValidaVendas(vendas);
     
      return 0;
 }
