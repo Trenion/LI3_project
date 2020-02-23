@@ -98,19 +98,31 @@ int procuraSeq (char *lista[], char pedido[], int n) {
     int i, contagem=0;
     for (i=0; i<n; i++) {
         char *contido = strstr(lista[i], pedido);
-        if (contido!=NULL && ValidaP(lista[i])) {
+        if (contido!=NULL) {
             printf("%s\n", lista[i]);
             contagem++;
         }
     }
     printf("\n");
-    return 0;
+    return contagem;
+}
+
+int procuraSeqInicial (char *lista[], char pedido[], int n) {
+
+    int i, contagem=0;
+    for (i=0; i<n; i++) {
+        if (strncmp(lista[i], pedido, strlen(pedido))==0) {
+            printf("%s\n", lista[i]);
+            contagem++;
+        }
+    }
+    printf("\n");
+    return contagem;
 }
 
 int main () {
     
     char vendas[5] = "KR1583 77.72 128 P L4891 2 1";
-    estaFuncaoValidaVendas(vendas);
     
-     return 0;
+    return 0;
 }
