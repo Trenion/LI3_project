@@ -115,6 +115,7 @@ int procuraSeqInicial (char *lista[], char pedido[], int n) {
             printf("%s\n", lista[i]);
             contagem++;
         }
+        else break;
     }
     printf("\n");
     return contagem;
