@@ -39,7 +39,7 @@ int ValidaC (char clientes[]) {
 int arrayP(){
 	FILE *fp,*fp1;
     fp = fopen("Produtos.txt","r");
-    fp1 = fopen("P.txt","a");
+//    fp1 = fopen("P.txt","a");
     char str[6],*s,**m;
 	int i,j=0;
 	m = malloc(j * sizeof(char*));
@@ -53,6 +53,7 @@ int arrayP(){
             m[j++]=s;
         }    
     }qsort(m, j, sizeof(char*), cmpStr);
+    fp1 = fopen("P.txt","a");
     for (i = 0; i < j; i++){
         fprintf(fp1,"%s\n",m[i]);	
     } 
@@ -61,7 +62,7 @@ int arrayP(){
 int arrayC(){
     FILE *fp,*fp1;
     fp = fopen("Clientes.txt","r");
-    fp1 = fopen("C.txt","a");
+//    fp1 = fopen("C.txt","a");
     char str[5],*s,**m;
     int i,j=0;
     m = malloc(j * sizeof(char*));
@@ -75,6 +76,7 @@ int arrayC(){
             m[j++]=s;
         }    
     }qsort(m, j, sizeof(char*), cmpStr);
+    fp1 = fopen("C.txt","a");
     for (i = 0; i < j; i++){
         fprintf(fp1,"%s\n",m[i]);   
     } 
