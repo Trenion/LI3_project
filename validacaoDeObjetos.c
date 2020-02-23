@@ -92,6 +92,21 @@ int estaFuncaoValidaVendas (char vendas[]) {
     return validacao;
 }
 
+
+int procuraSeq (char *lista[], char pedido[], int n) {
+    
+    int i, contagem=0;
+    for (i=0; i<n; i++) {
+        char *contido = strstr(lista[i], pedido);
+        if (contido!=NULL && ValidaP(lista[i])) {
+            printf("%s\n", lista[i]);
+            contagem++;
+        }
+    }
+    printf("\n");
+    return 0;
+}
+
 int main () {
     
     char vendas[5] = "KR1583 77.72 128 P L4891 2 1";
