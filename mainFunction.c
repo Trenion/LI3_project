@@ -3,6 +3,17 @@
 #include <string.h>
 #include <ctype.h>
 
+typedef struct
+{
+    char* produtoC;
+    float* precoUC;
+    double* unidadesC;
+    char* tipoC;
+    char* clienteC;
+    double* mesC;
+    double* filialC;
+}compra,* CompraP;
+
 int cmpStr(const void *a, const void *b) 
 { 
     char **ia = (char **)a;
@@ -36,16 +47,86 @@ int ValidaC (char clientes[]) {
     if (caracteresLidos != 5) validacao=0;
     return validacao;
 }
+CompraP ValidaV (char vendas[]) {
+    compra* c = malloc(sizeof(compra));
+    int iteracoes=1,j;
+    char *subString;
+    subString = strtok(vendas, " ");
+    if (!ValidaP(subString)) {
+        return NULL;
+    }
+    c->produtoC= malloc((strlen(subString)+1) * sizeof(char));
+    for (j = 0; j < strlen(subString); j++){
+        (c->produtoC)[j]=subString[j];
+    }(c->produtoC)[j]='\0';
+    while (subString!=NULL) {
+        subString = strtok(NULL, " ");
+        if (iteracoes==1) {
+             //--
+            float precoUnit;
+            precoUnit = atof (subString);//--
+            if (precoUnit<0 || precoUnit>=1000) {
+                return NULL;
+            }
+            c->precoUC= malloc(sizeof(float));
+            *(c->precoUC)=precoUnit;
+        }
+        if (iteracoes==2) {
+            float unidades = atof (subString);
+            if (unidades<1 || unidades>200) {
+                return NULL;
+            }
+            c->unidadesC= malloc(sizeof(float));
+            *(c->unidadesC)=unidades;
+        }
+        if (iteracoes==3) {
+            if ((strcmp (subString, "P") || (strcmp (subString, "N")))==0) {
+                return NULL;
+            }
+            c->tipoC= malloc((strlen(subString)+1) * sizeof(char));
+            for (j = 0; j < strlen(subString); j++){
+                (c->tipoC)[j]=subString[j];
+            }(c->tipoC)[j]='\0';
+        }
+        if (iteracoes==4) {
+            if(!ValidaC(subString)) {
+                return NULL;
+            }
+            c->clienteC= malloc((strlen(subString)+1) * sizeof(char));
+            for (j = 0; j < strlen(subString); j++){
+                (c->clienteC)[j]=subString[j];
+            }(c->clienteC)[j]='\0';
+        }
+        if (iteracoes==5) {
+            float mes = atof (subString);
+            if (mes<1 || mes>12) {
+                return NULL;
+            }
+            c->mesC= malloc(sizeof(float));
+            *(c->mesC)=mes;
+        }
+        if (iteracoes==6) {
+            float filial = atof (subString);
+            if (filial<1 || filial>3) {
+                return NULL;
+            }
+            c->filialC= malloc(sizeof(float));
+            *(c->filialC)=filial;
+        }
+        iteracoes++;
+    }
+    return c;
+}
 int arrayP(){
-	FILE *fp,*fp1;
+    FILE *fp,*fp1;
     fp = fopen("Produtos.txt","r");
-//    fp1 = fopen("P.txt","a");
+    fp1 = fopen("P.txt","a");
     char str[6],*s,**m;
-	int i,j=0;
-	m = malloc(j * sizeof(char*));
-	while(fgets(str,7,fp)){
+    int i,j=0;
+    m = malloc(j * sizeof(char*));
+    while(fgets(str,7,fp)){
         if (ValidaP(str)){
-        	s = malloc(7 * sizeof(char));
+            s = malloc(7 * sizeof(char));
             for (i = 0; i < 6; i++){
                 s[i]=str[i];
             }s[i]='\0';
@@ -53,19 +134,19 @@ int arrayP(){
             m[j++]=s;
         }    
     }qsort(m, j, sizeof(char*), cmpStr);
-    fp1 = fopen("P.txt","a");
     for (i = 0; i < j; i++){
-        fprintf(fp1,"%s\n",m[i]);	
+        fprintf(fp1,"%s\n",m[i]);   
     } 
     return 0;
 }
 int arrayC(){
     FILE *fp,*fp1;
     fp = fopen("Clientes.txt","r");
-//    fp1 = fopen("C.txt","a");
+    fp1 = fopen("C.txt","a");
     char str[5],*s,**m;
     int i,j=0;
     m = malloc(j * sizeof(char*));
+    
     while(fgets(str,6,fp)){
         if (ValidaC(str)){
             s = malloc(6 * sizeof(char));
@@ -76,14 +157,29 @@ int arrayC(){
             m[j++]=s;
         }    
     }qsort(m, j, sizeof(char*), cmpStr);
-    fp1 = fopen("C.txt","a");
     for (i = 0; i < j; i++){
         fprintf(fp1,"%s\n",m[i]);   
     } 
     return 0;
 }
+int arrayV () {
+   int len,i,j=0;
+   char str[50],*s,**m;
+   FILE *fp,*fp1;
+   fp = fopen("Vendas_1M.txt","r");
+   fp1 = fopen("V.txt","a");
+   while(fgets(str,50,fp)){
+       CompraP c = ValidaV(str);
+       if (c){
+           fprintf(fp1,"%s,%.2f,%.2f,%s,%s,%.2f,%.2f\n",(c->produtoC),*(c->precoUC),*(c->unidadesC),
+            (c->tipoC),(c->clienteC),*(c->mesC),*(c->filialC));
+       }
+   }
+   return(0);
+}
 int main(){
     arrayP();
     arrayC();
+    arrayV();
     return 0;
 }
