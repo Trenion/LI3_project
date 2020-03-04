@@ -273,6 +273,10 @@ char validarIdentificacaoProdutoIntroduzido(char* x){
 
 
 
+void destroySGV(SGV sgv){
+	remove(sgv);
+	printf("SGV destroido.\n");
+};
 
 
 

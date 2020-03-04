@@ -7,7 +7,7 @@
 
 
 SGV initSGV();
-SGV destroySGV();/////////////////////
+SGV destroySGV();
 SGV loadSGVFromFiles(SGV sgv, char* filesFolderPath);
 <?> getProductsStartedByLetter(SGV sgv, char letter);
 <?> getProductSalesAndProfit(SGV sgv, char* productID, int month);
