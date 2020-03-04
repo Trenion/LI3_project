@@ -102,6 +102,7 @@ int opcoes(int x){
 			char letra;
 			printf("Escolha a letra para procurar nos produtos.\n");
 			scanf("%c \n",&letra);
+			letta = validarCaracterIntroduzido(letra);
 			getProductsStartedByLetter(SGV sgv, letra );
 		};
 		case(2):{
@@ -109,14 +110,17 @@ int opcoes(int x){
 			int mes;
 			printf("Escolha o produto que quer procurar.\n");
 			scanf("%s \n",&identificacaoDoProduto);
+			identificacaoDoProduto = validarIdentificacaoProdutoIntroduzido(identificacaoDoProduto);
 			printf("Digite o mes a procurar.\n");
 			scanf("%d \n",&mes);
+			mes = validarMesIntroduzido(mes);
 			getProductSalesAndProfit(SGV sgv, identificacaoDoProduto, mes);
 		};
 		case(x==3):{
 			int identificacaoDoFilial;
 			printf("Digite o filial a procurar.\n");
 			scanf("%d \n",&identificacaoDoFilial);
+			identificacaoDoFilial = validarFilialIntroduzido (identificacaoDoFilial);
 			getProductsNeverBought(SGV sgv, identificacaoDoFilial);
 		};
 		case(x==4):{
@@ -131,6 +135,7 @@ int opcoes(int x){
 			char* identificacaoDoCliente;
 			printf("Escreva a identificacao do cliente que quer procurar.\n");
 			scanf("%s \n",&identificacaoDoCliente);
+			identificacaoDoCliente = validarIdentificacaoClienteIntroduzido(identificacaoDoCliente);
 			getProductsBoughtByClient(SGV sgv, identificacaoDoCliente);
 		};
 		case(x==7):{
@@ -138,8 +143,10 @@ int opcoes(int x){
 			int mesMIN;
 			printf("Digite o mes inicial.\n");
 			scanf("%d \n",&mesMIN);
+			mesMIN = validarMesIntroduzido(mesMIN);
 			printf("Digite o mes final.\n");
 			scanf("%d \n",&mesMAX);
+			mesMAX = validarMesIntroduzido(mesMAX);
 			if (mesMAX<mesMIN) getSalesAndProfit(SGV sgv, mesMAX, mesMIN);
 			else getSalesAndProfit(SGV sgv, mesMIN, mesMAX);
 		};
@@ -148,8 +155,10 @@ int opcoes(int x){
 			int filial;
 			printf("Escolha o produto que quer procurar.\n");
 			scanf("%s \n",&identificacaoDoProduto);
+			identificacaoDoProduto = validarIdentificacaoProdutosIntroduzido(identificacaoDoProduto);
 			printf("Digite o filial a procurar.\n");
 			scanf("%d \n",&filial);
+			filial=validarFilialIntroduzido (filial);
 			getProductBuyers(SGV sgv, identificacaoDoProduto, filia);
 		};
 		case(x==9):{
@@ -157,8 +166,10 @@ int opcoes(int x){
 			int filial;
 			printf("Escolha o cliente que quer procurar.\n");
 			scanf("%s \n",&identificacaoDoCliente);
+			identificacaoDoCliente = validarIdentificacaoClienteIntroduzido(identificacaoDoCliente);
 			printf("Digite o filial a procurar.\n");
 			scanf("%d \n",&filial);
+			filial=validarFilialIntroduzido (filial);
 			getClientFavoriteProduct(SGV sgv, identificacaoDoCliente, filial);
 		};
 		case(x==10):{
@@ -172,8 +183,10 @@ int opcoes(int x){
 			int filial;
 			printf("Escolha o cliente que quer procurar.\n");
 			scanf("%s \n",&identificacaoDoCliente);
+			identificacaoDoCliente = validarIdentificacaoClienteIntroduzido(identificacaoDoCliente);
 			printf("Digite o filial a procurar.\n");
 			scanf("%d \n",&filial);
+			filial=validarFilialIntroduzido (filial);
 			getClientTopProfitProducts(SGV sgv, identificacaoDoCliente, filial);
 		};
 		case(x==12):{};
