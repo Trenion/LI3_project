@@ -169,9 +169,9 @@ char** arrayP(FILE *fp,FILE *fp1){
             m[j++]=s;
         }    
     }qsort(m, j, sizeof(char*), cmpStr);
-    for (i = 0; i < j; i++){
-        fprintf(fp1,"%s\n",m[i]);   
-    } 
+//    for (i = 0; i < j; i++){
+//        fprintf(fp1,"%s\n",m[i]);   
+//    } 
     return m;
 }
 
@@ -191,9 +191,9 @@ char** arrayC(FILE *fp,FILE *fp1){
             m[j++]=s;
         }    
     }qsort(m, j, sizeof(char*), cmpStr);
-    for (i = 0; i < j; i++){
-        fprintf(fp1,"%s\n",m[i]);   
-    } 
+//    for (i = 0; i < j; i++){
+//        fprintf(fp1,"%s\n",m[i]);   
+//    } 
     return m;
 }
 
@@ -237,12 +237,12 @@ void valArrayVC(listaCompras* v,char** c){
         }
         if(strcmp(a,b)<0)i++;
     }
-    FILE *fp =  fopen("V_C.txt","a");
-    for (k = 0; k < *(v->size); k++){
-        fprintf(fp,"%s,%.2f,%.2f,%s,%s,%.2f,%.2f,%d\n",(((v->Compras)[k])->produtoC),*(((v->Compras)[k])->precoUC),
-            *(((v->Compras)[k])->unidadesC),(((v->Compras)[k])->tipoC),(((v->Compras)[k])->clienteC),
-            *(((v->Compras)[k])->mesC),*(((v->Compras)[k])->filialC),*(((v->Compras)[k])->valC));   
-   }
+//    FILE *fp =  fopen("V_C.txt","a");
+//    for (k = 0; k < *(v->size); k++){
+//        fprintf(fp,"%s,%.2f,%.2f,%s,%s,%.2f,%.2f,%d\n",(((v->Compras)[k])->produtoC),*(((v->Compras)[k])->precoUC),
+//            *(((v->Compras)[k])->unidadesC),(((v->Compras)[k])->tipoC),(((v->Compras)[k])->clienteC),
+//            *(((v->Compras)[k])->mesC),*(((v->Compras)[k])->filialC),*(((v->Compras)[k])->valC));   
+//   }
 
 }
 
@@ -263,12 +263,12 @@ void valArrayVP(listaCompras* v,char** c){
         }
         if(strcmp(a,b)<0)i++;
     }
-    FILE *fp =  fopen("V_P.txt","a");
-    for (k = 0; k < *(v->size); k++){
-        fprintf(fp,"%s,%.2f,%.2f,%s,%s,%.2f,%.2f,%d\n",(((v->Compras)[k])->produtoC),*(((v->Compras)[k])->precoUC),
-            *(((v->Compras)[k])->unidadesC),(((v->Compras)[k])->tipoC),(((v->Compras)[k])->clienteC),
-            *(((v->Compras)[k])->mesC),*(((v->Compras)[k])->filialC),*(((v->Compras)[k])->valC));   
-   }
+//    FILE *fp =  fopen("V_P.txt","a");
+//    for (k = 0; k < *(v->size); k++){
+//        fprintf(fp,"%s,%.2f,%.2f,%s,%s,%.2f,%.2f,%d\n",(((v->Compras)[k])->produtoC),*(((v->Compras)[k])->precoUC),
+//            *(((v->Compras)[k])->unidadesC),(((v->Compras)[k])->tipoC),(((v->Compras)[k])->clienteC),
+//            *(((v->Compras)[k])->mesC),*(((v->Compras)[k])->filialC),*(((v->Compras)[k])->valC));
+//   }
 }
 
 //funcao que testa quais compras tem cliente e produto existente, cria uma nova lista com as compras validas
@@ -291,12 +291,12 @@ listaCompras* validaFinal(listaCompras* v){
     }
     *(l->size) = j;
     (l->Compras) = p;
-    FILE *fp =  fopen("V.txt","a");
-    for (k = 0; k < *(l->size); k++){
-        fprintf(fp,"%s,%.2f,%.2f,%s,%s,%.2f,%.2f,%d\n",(((l->Compras)[k])->produtoC),*(((l->Compras)[k])->precoUC),
-            *(((l->Compras)[k])->unidadesC),(((l->Compras)[k])->tipoC),(((l->Compras)[k])->clienteC),
-            *(((l->Compras)[k])->mesC),*(((l->Compras)[k])->filialC),*(((l->Compras)[k])->valC));   
-    }
+//    FILE *fp =  fopen("V.txt","a");
+//    for (k = 0; k < *(l->size); k++){
+//        fprintf(fp,"%s,%.2f,%.2f,%s,%s,%.2f,%.2f,%d\n",(((l->Compras)[k])->produtoC),*(((l->Compras)[k])->precoUC),
+//            *(((l->Compras)[k])->unidadesC),(((l->Compras)[k])->tipoC),(((l->Compras)[k])->clienteC),
+//            *(((l->Compras)[k])->mesC),*(((l->Compras)[k])->filialC),*(((l->Compras)[k])->valC));
+//    }
     return l;
 }
 int main(){
@@ -304,9 +304,9 @@ int main(){
     listaCompras* v,*l;
     FILE *fp,*fp_txt,*fc,*fc_txt,*fv;
     fp = fopen("Produtos.txt","r");
-    fp_txt = fopen("P.txt","a");
+//    fp_txt = fopen("P.txt","a");
     fc = fopen("Clientes.txt","r");
-    fc_txt = fopen("C.txt","a");
+//    fc_txt = fopen("C.txt","a");
     fv = fopen("Vendas_1M.txt","r");
     p = arrayP(fp,fp_txt);
     c = arrayC(fc,fc_txt);
