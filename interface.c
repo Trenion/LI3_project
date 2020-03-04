@@ -98,13 +98,13 @@ void texto(){
 
 int opcoes(int x){
 	switch(x){
-		case(x==1):{
+		case(1):{
 			char letra;
 			printf("Escolha a letra para procurar nos produtos.\n");
 			scanf("%c \n",&letra);
 			getProductsStartedByLetter(SGV sgv, letra );
 		};
-		case(x==2):{
+		case(2):{
 			char* identificacaoDoProduto;
 			int mes;
 			printf("Escolha o produto que quer procurar.\n");
@@ -183,25 +183,80 @@ int opcoes(int x){
 		default
 			printf("Por favor selecione uma das opcoes validas.\n");
 			opcoes(x);
+	}
 	return 0;
 }
 
 
 
+char validarCaracterIntroduzido( char letra){
+	if(isAlpha(letra)==1 && isUpper(letra)==1)return letra;
+	else{
+		printf("Input Invalido.\n");
+		printf("Selecione uma letra maiuscula para seguir a opcao.\n");
+		scanf("%c \n",&letra);
+		validarCaracterIntroduzido(letra);
+	}
+	
+}
+
+
+int validarFilialIntroduzido (int x){
+	if(x==1 || x==2 || x==3)return x;
+	else{
+		printf("Input Invalido.\n");
+		printf("Selecione um filial (1,2 ou 3) para seguir a opcao.\n");
+		scanf("%d \n",&x);
+		validarFilialIntroduzido(x);
+	}
+}
+
+
+int validarMesIntroduzido(int x){
+	if(x>0 && x<13)return x;
+	else{
+		printf("Input Invalido.\n");
+		printf("Selecione um mes (entre 1 e 12) para seguir a opcao.\n");
+		scanf("%d \n",&x);
+		validarMesIntroduzido(x);
+	}
+
+}
 
 
 
 
+int validarLimiteIntroduzido(int x){
+	if(isDigit(x))return x;
+	else{
+		printf("Input Invalido.\n");
+		printf("Selecione um numero para seguir a opcao.\n");
+		scanf("%d \n",&x);
+		validarLimiteIntroduzido(x);
+	}
+}
 
 
+char validarIdentificacaoClienteIntroduzido(char* x){
+	if(isAlpha(x[0]) && isUpper(x[0]) && isDigit(x[1]) && isDigit(x[2]) && isDigit(x[3]) && isDigit(x[4]) && ((x[1]>=1 && x[1]<5) || (x[1]==5 && x[2]==0 && x[3]==0 && x[4]==0)) return x;
+	else{
+		printf("Input Invalido.\n");
+		printf("Selecione um cliente para seguir a opcao.\n");
+		scanf("%s \n",&x);
+		validarIdentificacaoClienteIntroduzido(x);
+	}
+}
 
 
-
-
-
-
-
-
+char validarIdentificacaoProdutoIntroduzido(char* x){
+	if(isAlpha(x[0]) && isUpper(x[0]) && isAlpha(x[1]) && isUpper(x[1]) && isDigit(x[2]) && isDigit(x[3]) && isDigit(x[4]) && isDigit(x[5]) && x[2]>=1) return x;
+	else{
+		printf("Input Invalido.\n");
+		printf("Selecione um produto para seguir a opcao.\n");
+		scanf("%s \n",&x);
+		validarIdentificacaoProdutoIntroduzido(x);
+	}
+}
 
 
 
