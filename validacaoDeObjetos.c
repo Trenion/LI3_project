@@ -134,11 +134,11 @@ void getProductSalesAndProfitGlobal (listaCompras* lista, char* productID, int m
         if (productID == (lista->Compras)[i]->produtoC) {
             if (month == *(lista->Compras)[i]->mesC) {
                 if (*(lista->Compras)[i]->tipoC == 'N') {
-                    vendasN+=*(lista->Compras)[i]->unidadesC;
+                    vendasN++;;
                     faturacaoN+=(*(lista->Compras)[i]->precoUC)*(*(lista->Compras)[i]->unidadesC);
                 }
                 else if (*(lista->Compras)[i]->tipoC == 'P') {
-                    vendasP+=*(lista->Compras)[i]->unidadesC;
+                    vendasP++;
                     faturacaoP+=(*(lista->Compras)[i]->precoUC)*(*(lista->Compras)[i]->unidadesC);
                 }
             }
