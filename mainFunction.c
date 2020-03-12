@@ -35,20 +35,245 @@ int cmpStr(const void *a, const void *b)
 } 
 
 //funcao de comparacao para o qsort de struct compra em funcao aos produtos
-int cmpStructP(const void *a, const void *b) 
+int cmpStruct1(const void *a, const void *b) 
 { 
     CompraP * ia = (CompraP*)a;
     CompraP * ib = (CompraP*)b;
     return strcmp(((*ia)->produtoC),((*ib)->produtoC));
 }
 
+//funcao de comparacao para o qsort de struct compra em funcao aos precos unitarios
+int cmpStruct2(const void *a, const void *b) 
+{ 
+    CompraP * ia = (CompraP*)a;
+    CompraP * ib = (CompraP*)b;
+    return (*((*ia)->precoUC)*1000 - *((*ib)->precoUC)*1000);
+} 
+
+//funcao de comparacao para o qsort de struct compra em funcao as unidades
+int cmpStruct3(const void *a, const void *b) 
+{ 
+    CompraP * ia = (CompraP*)a;
+    CompraP * ib = (CompraP*)b;
+    return (*((*ia)->unidadesC) - *((*ib)->unidadesC));
+}
+
+//funcao de comparacao para o qsort de struct compra em funcao aos tipos
+int cmpStruct4(const void *a, const void *b) 
+{ 
+    CompraP * ia = (CompraP*)a;
+    CompraP * ib = (CompraP*)b;
+     return strcmp(((*ia)->tipoC),((*ib)->tipoC));
+} 
+
 //funcao de comparacao para o qsort de struct compra em funcao aos clientes
-int cmpStructC(const void *a, const void *b) 
+int cmpStruct5(const void *a, const void *b) 
 { 
     CompraP * ia = (CompraP*)a;
     CompraP * ib = (CompraP*)b;
     return strcmp(((*ia)->clienteC),((*ib)->clienteC));
-}  
+} 
+
+//funcao de comparacao para o qsort de struct compra em funcao aos meses
+int cmpStruct6(const void *a, const void *b) 
+{ 
+    CompraP * ia = (CompraP*)a;
+    CompraP * ib = (CompraP*)b;
+    return (*((*ia)->mesC) - *((*ib)->mesC));
+} 
+
+//funcao de comparacao para o qsort de struct compra em funcao as filiais
+int cmpStruct7(const void *a, const void *b) 
+{ 
+    CompraP * ia = (CompraP*)a;
+    CompraP * ib = (CompraP*)b;
+    return (*((*ia)->filialC) - *((*ib)->filialC));
+} 
+
+//funcao de comparacao para o qsort de struct compra em funcao as validacoes 
+int cmpStruct8(const void *a, const void *b) 
+{ 
+    CompraP * ia = (CompraP*)a;
+    CompraP * ib = (CompraP*)b;
+    return (*((*ia)->valC) - *((*ib)->valC));
+}
+
+//funcao que gera a matriz de posicoes inicial
+int** posMatrix(int i){
+    int** pos;
+    pos = malloc((i+2)*sizeof(int*));
+    for (int j = 0; j < i+2; j++){
+        pos[j]=malloc(sizeof(int));
+        pos[j][0]=0; 
+     }
+     return pos; 
+}
+
+//funcao para comparar char* na multipla ordenacao 
+int cmp(int a[], int b[], int c){
+    int r=0;
+    for(int i=0;i<c;i++){
+        r+=(a[i]-b[i]);       
+    }return r;
+}
+
+
+//funcao que faz multiplas ordenacoes utilizando o qsort entre posicoes obtidas pela aterior ordenacao
+//e gera uma matriz de posicoes para cada nivel de ordenacao pode ser testada na lista de vendas no ficheiro de texto
+void cmpStruct(listaCompras * l, int* caso, int** pos, int n){
+    pos[0][0]=1;
+    pos[1]=realloc(pos[1],2*sizeof(int));
+    pos[1][1]=*(l->size);
+    int c, q, x;
+    int lvl;
+    for (lvl = 1; lvl <= n; lvl++){
+        c = 1,q = 1;
+        for(int i=0;i<pos[0][lvl-1];i++){
+            switch(caso[lvl-1]){
+            case(1):
+                qsort((l->Compras)+(pos[lvl][i]),pos[lvl][i+1]-pos[lvl][i], sizeof(CompraP), cmpStruct1);
+                break;
+            case(10):
+                qsort((l->Compras)+(pos[lvl][i]),pos[lvl][i+1]-pos[lvl][i], sizeof(CompraP), cmpStruct1);
+                break;
+            case(2):
+                qsort((l->Compras)+(pos[lvl][i]),pos[lvl][i+1]-pos[lvl][i], sizeof(CompraP), cmpStruct2);
+                break;
+            case(3):
+                qsort((l->Compras)+(pos[lvl][i]),pos[lvl][i+1]-pos[lvl][i], sizeof(CompraP), cmpStruct3);
+                break;
+            case(4):
+                qsort((l->Compras)+(pos[lvl][i]),pos[lvl][i+1]-pos[lvl][i], sizeof(CompraP), cmpStruct4);
+                break;
+            case(5):
+                qsort((l->Compras)+(pos[lvl][i]),pos[lvl][i+1]-pos[lvl][i], sizeof(CompraP), cmpStruct5);
+                break;
+            case(50):
+                qsort((l->Compras)+(pos[lvl][i]),pos[lvl][i+1]-pos[lvl][i], sizeof(CompraP), cmpStruct5);
+                break;
+            case(6):
+                qsort((l->Compras)+(pos[lvl][i]),pos[lvl][i+1]-pos[lvl][i], sizeof(CompraP), cmpStruct6);
+                break;
+            case(7):
+                qsort((l->Compras)+(pos[lvl][i]),pos[lvl][i+1]-pos[lvl][i], sizeof(CompraP), cmpStruct7);
+                break; 
+            case(8):
+                qsort((l->Compras)+(pos[lvl][i]),pos[lvl][i+1]-pos[lvl][i], sizeof(CompraP), cmpStruct8);
+                break;
+            }
+        }
+        int a[6], b[6], j=1;
+        while(c < *(l->size)){
+            x = pos[lvl][j];
+            switch(caso[lvl-1]){
+            case(1):                
+                while(c < *(l->size)){
+                    for (int i = 0; i < 6; i++){
+                        a[i]=((*((l->Compras)+(c)))->produtoC)[i];
+                        b[i]=((*((l->Compras)+(c-1)))->produtoC)[i];
+                    }
+                    if (!(cmp(a,b,6))){
+                        c++;
+                    }else break;
+                }
+                break;
+            case(10):                
+                while(c < *(l->size)){
+                    a[0]=((*((l->Compras)+(c)))->produtoC)[0];
+                    b[0]=((*((l->Compras)+(c-1)))->produtoC)[0];
+                    if(!(a[0]-b[0])){
+                        c++;
+                    }else break;
+                }
+                break;
+            case(2):
+                while(c < *(l->size)){
+                    if(!(*((l->Compras)[c]->precoUC)-*((l->Compras)[c-1]->precoUC))){
+                        c++;
+                    }else break;
+                }
+                break;
+            case(3):
+                while(c < *(l->size)){
+                    if(!(*((l->Compras)[c]->unidadesC)-*((l->Compras)[c-1]->unidadesC))){
+                        c++;
+                    }else break;
+                }
+                break;
+            case(4):
+                while(c < *(l->size)){
+                    a[0]=((*((l->Compras)+(c)))->tipoC)[0];
+                    b[0]=((*((l->Compras)+(c-1)))->tipoC)[0];
+                    if(!(a[0]-b[0])){
+                        c++;
+                    }else break;
+                }
+                break;
+            case(5):               
+                while(c < *(l->size)){
+                    for (int i = 0; i < 5; i++){
+                        a[i]=((*((l->Compras)+(c)))->clienteC)[i];
+                        b[i]=((*((l->Compras)+(c-1)))->clienteC)[i];
+                    }
+                    if (!(cmp(a,b,5))){
+                        c++;
+                    }else break;
+                }
+                break;
+            case(50):                
+                while(c < *(l->size)){
+                    a[0]=((*((l->Compras)+(c)))->clienteC)[0];
+                    b[0]=((*((l->Compras)+(c-1)))->clienteC)[0];
+                    if(!(a[0]-b[0])){
+                        c++;
+                    }else break;
+                }
+                break;
+            case(6):
+                while(c < *(l->size)){
+                    if(!(*((l->Compras)[c]->mesC)-*((l->Compras)[c-1]->mesC))){
+                        c++;
+                    }else break;
+                }break;
+            case(7):
+                while(c < *(l->size)){
+                    if(!(*((l->Compras)[c]->filialC)-*((l->Compras)[c-1]->filialC))){
+                        c++;
+                    }else break;
+                }break;
+            case(8):
+                while(c < *(l->size)){
+                    if(!(*((l->Compras)[c]->valC)-*((l->Compras)[c-1]->valC))){
+                        c++;
+                    }else break;
+                }break;
+            }if (c>x){
+                q++;
+                pos[lvl+1]=realloc(pos[lvl+1],(q)*sizeof(int));
+                pos[lvl+1][q-1]=x;
+                j++;
+            }else{
+                if(c==x)j++;
+                q++;
+                pos[lvl+1]=realloc(pos[lvl+1],(q)*sizeof(int));
+                pos[lvl+1][q-1]=c;
+                c++;
+            }
+        }printf("3\n");
+        pos[0]=realloc(pos[0],(lvl+1)*sizeof(int));
+        printf("4\n");
+        pos[0][lvl]=q-1;
+        printf("5\n");
+        q++;
+        pos[lvl+1]=realloc(pos[lvl+1],(q)*sizeof(int));
+        pos[lvl+1][q-1]=(-1);
+    }
+    pos[1]=realloc(pos[1],3*sizeof(int));
+    pos[1][2]=(-1);
+    pos[0]=realloc(pos[0],(lvl+1)*sizeof(int));
+    pos[0][lvl]=(-1);
+
+}
 
 //funcao de validacao de produtos
 int ValidaP (char produtos[]) {
@@ -224,7 +449,7 @@ listaCompras* arrayV(FILE *fp) {
 //da compra no caso do cliente existir na lista de clientes validos, 
 //para fin de teste a funcao faz print no file "V_C.txt"
 void valArrayVC(listaCompras* v,char** c){
-    qsort((v->Compras),*(v->size), sizeof(CompraP), cmpStructC);
+    qsort((v->Compras),*(v->size), sizeof(CompraP), cmpStruct5);
     int i=0,j=0,k;
     char a[7],b[7];
     while(j<*(v->size)){
@@ -250,7 +475,7 @@ void valArrayVC(listaCompras* v,char** c){
 //da compra no caso do produto existir na lista de produtos validos, 
 //para fin de teste a funcao faz print no file "V_P.txt"
 void valArrayVP(listaCompras* v,char** c){
-    qsort((v->Compras),*(v->size), sizeof(CompraP), cmpStructP);
+    qsort((v->Compras),*(v->size), sizeof(CompraP), cmpStruct1);
     int i=0,j=0,k;
     char a[7],b[7];
     while(j<*(v->size)){
@@ -291,28 +516,52 @@ listaCompras* validaFinal(listaCompras* v){
     }
     *(l->size) = j;
     (l->Compras) = p;
-//    FILE *fp =  fopen("V.txt","a");
-//    for (k = 0; k < *(l->size); k++){
-//        fprintf(fp,"%s,%.2f,%.2f,%s,%s,%.2f,%.2f,%d\n",(((l->Compras)[k])->produtoC),*(((l->Compras)[k])->precoUC),
-//            *(((l->Compras)[k])->unidadesC),(((l->Compras)[k])->tipoC),(((l->Compras)[k])->clienteC),
-//            *(((l->Compras)[k])->mesC),*(((l->Compras)[k])->filialC),*(((l->Compras)[k])->valC));
-//    }
     return l;
 }
+
+//funcao para imprimir uma listaCompra num ficheiro de texto 
+void printListaC1(listaCompras* l){
+    FILE *fp =  fopen("V1.txt","a");
+    for (int k = 0; k < *(l->size); k++){
+        fprintf(fp,"%s,%.2f,%.2f,%s,%s,%.2f,%.2f,%d\n",(((l->Compras)[k])->produtoC),*(((l->Compras)[k])->precoUC),
+            *(((l->Compras)[k])->unidadesC),(((l->Compras)[k])->tipoC),(((l->Compras)[k])->clienteC),
+            *(((l->Compras)[k])->mesC),*(((l->Compras)[k])->filialC),*(((l->Compras)[k])->valC));
+    }
+}
+
+//funcao para imprimir uma matriz de posicoes num ficheiro de texto 
+void printM(int** pos, int n){
+    FILE *fp =  fopen("V2.txt","a");
+    for (int i = 0; i <= n+1; i++){
+        for (int j = 0; pos[i][j]>(-1); j++){
+            fprintf(fp,"%d,",pos[i][j]);
+        }fprintf(fp,"\n\n");
+    }fprintf(fp,"\n\n");
+}
+
 int main(){
     char** c,**p;
     listaCompras* v,*l;
     FILE *fp,*fp_txt,*fc,*fc_txt,*fv;
     fp = fopen("Produtos.txt","r");
-//    fp_txt = fopen("P.txt","a");
+    //fp_txt = fopen("P.txt","a");
     fc = fopen("Clientes.txt","r");
-//    fc_txt = fopen("C.txt","a");
+    //fc_txt = fopen("C.txt","a");
     fv = fopen("Vendas_1M.txt","r");
     p = arrayP(fp,fp_txt);
     c = arrayC(fc,fc_txt);
     v = arrayV(fv);
-    valArrayVC(v,c);
-    valArrayVP(v,p);
-    l = validaFinal(v);
+    int n=1;
+    printf("v hecha\n");
+    int** pos = posMatrix(n),caso[]={50};
+    printf("pos hecha\n");
+    cmpStruct(v, caso, pos, n);
+    printf("pos1 hecha\n");
+    printM(pos,n);
+    printf("pos1 impresa\n");
+    printListaC1(v);
+//    valArrayVC(v,c);
+//    valArrayVP(v,p);
+//    l = validaFinal(v);
     return 0;
 }
