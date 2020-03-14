@@ -259,11 +259,9 @@ void cmpStruct(listaCompras * l, int* caso, int** pos, int n){
                 pos[lvl+1][q-1]=c;
                 c++;
             }
-        }printf("3\n");
+        }
         pos[0]=realloc(pos[0],(lvl+1)*sizeof(int));
-        printf("4\n");
         pos[0][lvl]=q-1;
-        printf("5\n");
         q++;
         pos[lvl+1]=realloc(pos[lvl+1],(q)*sizeof(int));
         pos[lvl+1][q-1]=(-1);
@@ -520,8 +518,7 @@ listaCompras* validaFinal(listaCompras* v){
 }
 
 //funcao para imprimir uma listaCompra num ficheiro de texto 
-void printListaC1(listaCompras* l){
-    FILE *fp =  fopen("V1.txt","a");
+void printListaC(listaCompras* l,FILE* fp){
     for (int k = 0; k < *(l->size); k++){
         fprintf(fp,"%s,%.2f,%.2f,%s,%s,%.2f,%.2f,%d\n",(((l->Compras)[k])->produtoC),*(((l->Compras)[k])->precoUC),
             *(((l->Compras)[k])->unidadesC),(((l->Compras)[k])->tipoC),(((l->Compras)[k])->clienteC),
@@ -539,10 +536,22 @@ void printM(int** pos, int n){
     }fprintf(fp,"\n\n");
 }
 
+listaCompras* ex2(listaCompras* l,char c){
+    int i, cId = c-65, ** pos = posMatrix(1),caso[]={10};
+    listaCompras* lx;
+    lx = malloc(sizeof(listaCompras));
+    cmpStruct(v, caso, pos, 1);
+    lx->Compras= malloc(sizeof(CompraP));
+    (lx->Compras) = (l->Compras)+pos[2][cId];
+    lx->size= malloc(sizeof(int));
+    *(lx->size) = pos[2][cId+1]-pos[2][cId];
+    return lx;
+}
+
 int main(){
     char** c,**p;
-    listaCompras* v,*l;
-    FILE *fp,*fp_txt,*fc,*fc_txt,*fv;
+    listaCompras* v,*l,*lEx2;
+    FILE *fp,*fp_txt,*fc,*fc_txt,*fv,*fex2;
     fp = fopen("Produtos.txt","r");
     //fp_txt = fopen("P.txt","a");
     fc = fopen("Clientes.txt","r");
@@ -551,17 +560,17 @@ int main(){
     p = arrayP(fp,fp_txt);
     c = arrayC(fc,fc_txt);
     v = arrayV(fv);
-    int n=1;
-    printf("v hecha\n");
-    int** pos = posMatrix(n),caso[]={50};
-    printf("pos hecha\n");
-    cmpStruct(v, caso, pos, n);
-    printf("pos1 hecha\n");
-    printM(pos,n);
-    printf("pos1 impresa\n");
-    printListaC1(v);
-//    valArrayVC(v,c);
-//    valArrayVP(v,p);
-//    l = validaFinal(v);
+//    int n=1;
+//    int** pos = posMatrix(n),caso[]={50};
+//    cmpStruct(v, caso, pos, n);
+//    printM(pos,n);
+//    printListaC(v);
+    valArrayVC(v,c);
+    valArrayVP(v,p);
+    l = validaFinal(v);
+    char x2 = 'C';
+    fex2 =  fopen("Ex2.txt","a");
+    lEx2 = ex2(l,x2);
+    printListaC(lEx2,fex2);
     return 0;
 }
