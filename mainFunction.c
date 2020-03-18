@@ -614,6 +614,46 @@ float* ex3(listaCompras* l,int mes,char* p,char c){
     }return f;    
 }
 
+//No momento, esta função só cria a lista com os produtos que não foram comprados!
+char** ex4(char** p, listaCompras* l, char c) {
+    int j=0, ** pos = posMatrix(1),caso[]={1}, f1=0, f2=0, f3=0, qp=0;
+    char **produtos,a[6],b[6];
+    produtos = malloc(qp * sizeof(char*));
+    cmpStruct(l, caso, pos, 1);
+    for(int i=0;p[i];i++){
+        strncpy(a,p[i],6);
+//      for (int k=0; k<6; k++){
+//          printf ("%c", a[k]);
+//      }
+//      printf (" ");
+        strncpy(b,((*((l->Compras)+pos[3][j]))->produtoC),6);
+//        for (int k=0; k<6; k++){
+//            printf ("%c", b[k]);
+//        }
+//        printf (" ");
+        if(strncmp(a,b,6)>0){ // igual a zero, strings iguais
+            j++;
+         }
+        else if(strncmp(a,b,6)<0){ // string a vem antes de b alfabeticamente
+            qp++;
+            produtos = realloc(produtos,qp * sizeof(char*));
+            produtos[qp-1]=p[i];
+        }
+        else{   // string a vem depois de b alfabeticamente -> Casos em que ha repetição nas vendas
+                j++;
+        }
+    }
+    FILE* fex4;
+    fex4 =  fopen("Ex4.txt","w");
+    fprintf(fex4,"Produtos não comprados: %d\n",qp);
+    for (int i = 0; i < qp; i++){
+        fprintf(fex5,"%s\n",produtos[i]);
+    }
+    return produtos;
+}
+
+
+
 char** ex5(listaCompras* l){
     int j=0,k, ** pos = posMatrix(2),caso[]={5,7};
     char **clients,a[6],b[6],c[6];
