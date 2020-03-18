@@ -626,11 +626,11 @@ char** ex4(char** p, listaCompras* l, char c) {
 //          printf ("%c", a[k]);
 //      }
 //      printf (" ");
-        strncpy(b,((*((l->Compras)+pos[3][j]))->produtoC),6);
-//        for (int k=0; k<6; k++){
-//            printf ("%c", b[k]);
-//        }
-//        printf (" ");
+        strncpy(b,((*((l->Compras)+pos[2][j]))->produtoC),6);
+        for (int k=0; k<6; k++){
+            printf ("%c", b[k]);
+        }
+        printf (" ");
         if(strncmp(a,b,6)>0){ // igual a zero, strings iguais
             j++;
          }
@@ -644,10 +644,10 @@ char** ex4(char** p, listaCompras* l, char c) {
         }
     }
     FILE* fex4;
-    fex4 =  fopen("Ex4.txt","w");
+    fex4 =  fopen("Ex4.txt","a");
     fprintf(fex4,"Produtos não comprados: %d\n",qp);
     for (int i = 0; i < qp; i++){
-        fprintf(fex5,"%s\n",produtos[i]);
+        fprintf(fex4,"%s\n",produtos[i]);
     }
     return produtos;
 }
@@ -824,7 +824,7 @@ float* ex8(listaCompras* l,int mes1,int mes2){
 }
 
 int main(){
-    char** c,**p,*prod,**cEx5;
+    char** c,**p,*prod,**cEx5, **cEx4;
     listaCompras* v,*l,*lEx2;
     cell *** Ex7;
     float* fEx3,*fEx8;
@@ -845,6 +845,7 @@ int main(){
     //lEx2 = ex2(l,x);
     //mes = 8;prod = p[8079];x='f';
     //fEx3 = ex3(l,mes,prod,x);
+    cEx4 = ex4(p, l, 'l');
     //cEx5 = ex5(l);
     //cpEx6=ex6(c,p,l);
     //printf("numero de clientes = %d, numero de productos = %d\n",cpEx6[0],cpEx6[1]);
@@ -855,7 +856,7 @@ int main(){
     //int** pos = posMatrix(n),caso[]={50,5,6,7,1};
     //cmpStruct(l, caso, pos, n);
     //printM(pos,n);
-    //fexV =  fopen("V.txt","a");
-    //printListaC(l,fexV);
+    fexV =  fopen("V.txt","a");
+    printListaC(l,fexV);
     return 0;
 }
