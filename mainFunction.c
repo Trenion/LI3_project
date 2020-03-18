@@ -119,7 +119,8 @@ int** posMatrix(int i){
 int cmp(int a[], int b[], int c){
     int r=0;
     for(int i=0;i<c;i++){
-        r+=(a[i]-b[i]);       
+        r+=(a[i]-b[i]);
+        if(r)return r;       
     }return r;
 }
 
@@ -627,14 +628,11 @@ char** ex4(char** p, listaCompras* l, char c) {
 //      }
 //      printf (" ");
         strncpy(b,((*((l->Compras)+pos[2][j]))->produtoC),6);
-        for (int k=0; k<6; k++){
-            printf ("%c", b[k]);
-        }
-        printf (" ");
-        if(strncmp(a,b,6)>0){ // igual a zero, strings iguais
-            j++;
-         }
-        else if(strncmp(a,b,6)<0){ // string a vem antes de b alfabeticamente
+        //for (int k=0; k<6; k++){
+        //    printf ("%c", b[k]);
+        //}
+        //printf (" ");
+        if(strncmp(a,b,6)<0){ // string a vem antes de b alfabeticamente
             qp++;
             produtos = realloc(produtos,qp * sizeof(char*));
             produtos[qp-1]=p[i];
@@ -852,10 +850,10 @@ int main(){
     //Ex7 = ex7(l,c[9024]);
     //fEx8=ex8(l,2,7);
     //printf("numero de vendas = %.1f, total faturado = %f\n",fEx8[1],fEx8[0]);
-    //int n=5;
-    //int** pos = posMatrix(n),caso[]={50,5,6,7,1};
-    //cmpStruct(l, caso, pos, n);
-    //printM(pos,n);
+    int n=1;
+    int** pos = posMatrix(n),caso[]={1};
+    cmpStruct(l, caso, pos, n);
+    printM(pos,n);
     fexV =  fopen("V.txt","a");
     printListaC(l,fexV);
     return 0;
