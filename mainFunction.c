@@ -104,6 +104,14 @@ int cmpStruct8(const void *a, const void *b)
     return (*((*ia)->valC) - *((*ib)->valC));
 }
 
+//funcao de comparacao para o qsort de struct compra em funcao da faturação (preço * unidades)
+int cmpStruct9(const void *a, const void *b)
+{
+    CompraP * ia = (CompraP*)a;
+    CompraP * ib = (CompraP*)b;
+    return ((*((*ia)->precoUC))*(*((*ia)->unidadesC)) - (*((*ib)->precoUC))*(*((*ib)->unidadesC)));
+}
+
 //funcao que gera a matriz de posicoes inicial
 int** posMatrix(int i){
     int** pos;
@@ -170,6 +178,9 @@ void cmpStruct(listaCompras * l, int* caso, int** pos, int n){
                 break; 
             case(8):
                 qsort((l->Compras)+(pos[lvl][i]),pos[lvl][i+1]-pos[lvl][i], sizeof(CompraP), cmpStruct8);
+                break;
+            case(9):
+                qsort((l->Compras)+(pos[lvl][i]),pos[lvl][i+1]-pos[lvl][i], sizeof(CompraP), cmpStruct9);
                 break;
             }
         }
@@ -264,6 +275,14 @@ void cmpStruct(listaCompras * l, int* caso, int** pos, int n){
             case(8):
                 while(c < *(l->size)){
                     if(!(*((l->Compras)[c]->valC)-*((l->Compras)[c-1]->valC))){
+                        c++;
+                    }else break;
+                }break;
+            case(9):
+                while(c < *(l->size)){
+                    int tst1 = (*((l->Compras)[c]->precoUC))*(*((l->Compras)[c]->unidadesC));
+                    int tst2 = (*((l->Compras)[c-1]->precoUC))*(*((l->Compras)[c-1]->unidadesC));
+                    if(!(tst1-tst2)){
                         c++;
                     }else break;
                 }break;
@@ -855,8 +874,8 @@ int main(){
     Ex7 = ex7(l,c[15079]);
     //fEx8 = ex8(l,2,7);
     //printf("numero de vendas = %.1f, total faturado = %f\n",fEx8[1],fEx8[0]);
-    int n=5;
-    int** pos = posMatrix(5),caso[]={50,5,6,7,1};
+    int n=2;
+    int** pos = posMatrix(n),caso[]={5,9};
     cmpStruct(l, caso, pos, n);
     printM(pos,n);
     fexV =  fopen("V.txt","a");
