@@ -1,0 +1,12 @@
+10 produtos onde o cliente A1231 gastou mais dinheiro: 
+
+PJ1851
+TI1356
+JI1207
+AE1722
+WA1540
+PB1447
+OM1725
+EK1498
+RB1432
+FF1961
