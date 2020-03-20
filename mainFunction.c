@@ -109,7 +109,7 @@ int cmpStruct9(const void *a, const void *b)
 {
     CompraP * ia = (CompraP*)a;
     CompraP * ib = (CompraP*)b;
-    return ((*((*ia)->precoUC))*(*((*ia)->unidadesC)) - (*((*ib)->precoUC))*(*((*ib)->unidadesC)));
+    return ((*((*ib)->precoUC))*(*((*ib)->unidadesC)) - (*((*ia)->precoUC))*(*((*ia)->unidadesC)));
 }
 
 //funcao que gera a matriz de posicoes inicial
@@ -639,35 +639,57 @@ float* ex3(listaCompras* l,int mes,char* p,char c){
 
 //No momento, esta função só cria a lista com os produtos que não foram comprados!
 char** ex4(char** p, listaCompras* l, char c) {
-    int j=0, ** pos = posMatrix(1),caso[]={1}, f1=0, f2=0, f3=0, qp=0;
+    int j=0, f[]={0,0,0}, f3=0, qp=0;
     char **produtos,a[6],b[6];
-    produtos = malloc(qp * sizeof(char*));
-    cmpStruct(l, caso, pos, 1);
-    for(int i=0;p[i];i++){
-        strncpy(a,p[i],6);
-//      for (int k=0; k<6; k++){
-//          printf ("%c", a[k]);
-//      }
-//      printf (" ");
-        strncpy(b,((*((l->Compras)+pos[2][j]))->produtoC),6);
-        //for (int k=0; k<6; k++){
-        //    printf ("%c", b[k]);
-        //}
-        //printf (" ");
-        if(strncmp(a,b,6)<0){ // string a vem antes de b alfabeticamente
-            qp++;
-            produtos = realloc(produtos,qp * sizeof(char*));
-            produtos[qp-1]=p[i];
-        }
-        else{   // string a vem depois de b alfabeticamente -> Casos em que ha repetição nas vendas
-                j++;
-        }
-    }
     FILE* fex4;
     fex4 =  fopen("Ex4.txt","a");
-    fprintf(fex4,"Produtos não comprados: %d\n",qp);
-    for (int i = 0; i < qp; i++){
-        fprintf(fex4,"%s\n",produtos[i]);
+    produtos = malloc(qp * sizeof(char*));
+    if (!(c-'f')){
+        int ** pos = posMatrix(2),caso[]={7,1},i3=0;
+        cmpStruct(l, caso, pos, 2);
+        for (int i1 = 0; i1 < 3; i1++){
+            int i2;
+            fprintf(fex4,"Produtos não comprados na filial %d:\n",i1+1);
+            for (i2 = 0; p[i2]&&(pos[3][i3]<(pos[2][i1+1])); i2++){
+                strncpy(a,p[i2],6);
+                strncpy(b,((*((l->Compras)+pos[3][i3]))->produtoC),6);
+                if(strncmp(a,b,6)<0){ 
+                    qp++;
+                    f[i1]++;
+                    produtos = realloc(produtos,qp * sizeof(char*));
+                    produtos[qp-1]=p[i2];
+                    fprintf(fex4,"%s\n",produtos[qp-1]);
+                }
+                else{   
+                    i3++;
+                }
+            }while(p[i2]){
+                qp++;
+                f[i1]++;
+                produtos = realloc(produtos,qp * sizeof(char*));
+                produtos[qp-1]=p[i2];
+                fprintf(fex4,"%s\n",produtos[qp-1]);
+            }fprintf(fex4,"numero produtos não comprados filial %d: %d\n",i1+1,f[i1]);
+        }
+    }else{
+        int ** pos = posMatrix(1),caso[]={1};
+        cmpStruct(l, caso, pos, 1);
+        for(int i=0;p[i];i++){
+            strncpy(a,p[i],6);
+            strncpy(b,((*((l->Compras)+pos[2][j]))->produtoC),6);
+            if(strncmp(a,b,6)<0){ 
+                qp++;
+                produtos = realloc(produtos,qp * sizeof(char*));
+                produtos[qp-1]=p[i];
+            }
+            else{   
+                j++;
+            }
+        }
+        fprintf(fex4,"Produtos não comprados: %d\n",qp);
+        for (int i = 0; i < qp; i++){
+            fprintf(fex4,"%s\n",produtos[i]);
+        }
     }
     return produtos;
 }
@@ -847,21 +869,118 @@ float* ex8(listaCompras* l,int mes1,int mes2){
     }return vendas;
 }
 
+char*** ex9(listaCompras* l,char* p,int f){
+    FILE* fp;
+    fp =  fopen("Ex9.txt","a");
+    fprintf(fp,"Produto: %s, filial: %d\n", p,f);
+    int** pos = posMatrix(6),caso[]={10,11,1,7,4,5},pId0=p[0]-65,pId1=p[1]-65,a[6],b[6],qn=0,qp=0;
+    cmpStruct(l, caso, pos, 6);
+    char*** clientesPF,**cN,**cP;
+    clientesPF= malloc(2*sizeof(char**));
+    cN= malloc(sizeof(char*));
+    cP= malloc(sizeof(char*));
+    int i=pos[3][pId0*26+pId1];
+    for (int j = 0; j < 6; j++){
+        a[j]=p[j];
+        b[j]=((*((l->Compras)+i))->produtoC)[j];
+    }
+    while(cmp(a,b,6)){
+        i++;
+        for (int j = 0; j < 6; j++){
+            b[j]=((*((l->Compras)+i))->produtoC)[j];
+        }
+    }int k = *((*((l->Compras)+i))->filialC);
+    while(f-k&&(!(strncmp(p,((*((l->Compras)+i))->produtoC),6)))){
+        i++;
+        k = *((*((l->Compras)+i))->filialC);
+    }k = ((*((l->Compras)+i))->tipoC)[0]-65;
+    while((!(k-13))&&(!(*((*((l->Compras)+i))->filialC)-f))&&(!(strncmp(p,((*((l->Compras)+i))->produtoC),6)))){
+        if(i-(*(l->size)-1)){
+            for (int j = 0; j < 6; j++){
+                a[j]=((*((l->Compras)+i+1))->clienteC)[j];
+                b[j]=((*((l->Compras)+i))->clienteC)[j];
+            }
+            if(cmp(a,b,6)){
+                qn++;
+                cN= realloc(cN,qn*sizeof(char*));
+                cN[qn-1]=((*((l->Compras)+i))->clienteC);
+            }
+        }else{
+            for (int j = 0; j < 6; j++){
+                a[j]=((*((l->Compras)+i-1))->clienteC)[j];
+                b[j]=((*((l->Compras)+i))->clienteC)[j];
+            }
+            if(cmp(a,b,6)){
+                qn++;
+                cN= realloc(cN,qn*sizeof(char*));
+                cN[qn-1]=((*((l->Compras)+i))->clienteC);
+            }
+        }
+        i++;
+        k = ((*((l->Compras)+i))->tipoC)[0]-65;
+    }while((!(k-15))&&(!(*((*((l->Compras)+i))->filialC)-f))&&(!(strncmp(p,((*((l->Compras)+i))->produtoC),6)))){
+        if(i-(*(l->size)-1)){
+            for (int j = 0; j < 6; j++){
+                a[j]=((*((l->Compras)+i+1))->clienteC)[j];
+                b[j]=((*((l->Compras)+i))->clienteC)[j];
+            }
+            if(cmp(a,b,6)){
+                qp++;
+                cP= realloc(cP,qp*sizeof(char*));
+                cP[qp-1]=((*((l->Compras)+i))->clienteC);
+            }
+        }else{
+            for (int j = 0; j < 6; j++){
+                a[j]=((*((l->Compras)+i-1))->clienteC)[j];
+                b[j]=((*((l->Compras)+i))->clienteC)[j];
+            }
+            if(cmp(a,b,6)){
+                qp++;
+                cP= realloc(cP,qp*sizeof(char*));
+                cP[qp-1]=((*((l->Compras)+i))->clienteC);
+            }
+        }
+        i++;
+        k = ((*((l->Compras)+i))->tipoC)[0]-65;
+    }
+    if (!qn){
+        cN= NULL;
+        fprintf(fp,"clientes Normais: nao tem\n");
+    }if (!qp){
+        cP= NULL;
+        fprintf(fp,"clientes Promocao: nao tem\n");
+    }clientesPF[0]=cN;
+    clientesPF[1]=cP;
+    if (qn){
+        cN= NULL;
+        fprintf(fp,"clientes Normais tem %d: \n",qn);
+        for(int j =0;j<qn;j++){
+            fprintf(fp,"%s\n",clientesPF[0][j]);
+        }
+    }if (qp){
+        cP= NULL;
+        fprintf(fp,"clientes Promocao tem %d: \n",qp);
+        for(int j =0;j<qp;j++){
+            fprintf(fp,"%s\n",clientesPF[1][j]);
+        }
+    }return clientesPF;
+}
+
 
 char** ex12(listaCompras* l, char* p, int N){
     
-    int i,j,k=0, ** pos = posMatrix(2),caso[]={5,9}, cId0 = p[0]-65, pc=0;
+    int i,j,k=0, ** pos = posMatrix(3),caso[]={50,5,9}, cId0 = p[0]-65, pc=0;
     char **produtos,a[6],b[6];
     produtos = malloc(pc * sizeof(char*));
-    cmpStruct(l, caso, pos, 2);
-    i = pos[3][cId0];
+    cmpStruct(l, caso, pos, 3);
+    i = pos[2][cId0];
     strncpy(a,((*((l->Compras)+i))->clienteC),6);
     strncpy(b,((*((l->Compras)))->clienteC),6);
     while(strncmp(a,p,6)<0){
         i++;
         strncpy(a,((*((l->Compras)+i))->clienteC),6);
     }
-    if (strncmp(a,p,6)>0) printf("\nO cliente introduzido não efetuou compras ou não existe nos registos!\n\n");
+    if (strncmp(a,p,6)>0) printf("\nO cliente introduzido não efetuou compras ou não existe nos registos!\n");
     else {
         while (!strncmp(a,p,6) && k<N) {
             pc++;
@@ -900,24 +1019,25 @@ int main(){
     valArrayVC(v,c);
     valArrayVP(v,p);
     l = validaFinal(v);
-//    char x = 'C';
+    //char x = 'C';
     //lEx2 = ex2(l,x);
     //mes = 8;prod = p[8079];x='f';
     //fEx3 = ex3(l,mes,prod,x);
-    //cEx4 = ex4(p, l, 'l');
+    //cEx4 = ex4(p, l, 'f');
     //cEx5 = ex5(l);
     //cpEx6=ex6(c,p,l);
     //printf("numero de clientes = %d, numero de productos = %d\n",cpEx6[0],cpEx6[1]);
-//    Ex7 = ex7(l,c[15079]);
+    //Ex7 = ex7(l,c[15079]);
     //fEx8 = ex8(l,2,7);
     //printf("numero de vendas = %.1f, total faturado = %f\n",fEx8[1],fEx8[0]);
+    //cEx9 = ex9(l,p[13056],2);
     char *t = "A1231";
     cEx12 = ex12(l, t, 10);
-//    int n=2;
-//    int** pos = posMatrix(n),caso[]={5,9};
-//    cmpStruct(l, caso, pos, n);
-//    printM(pos,n);
-//    fexV =  fopen("V.txt","a");
-//    printListaC(l,fexV);
+    int n=3;
+    int** pos = posMatrix(n),caso[]={50,5,9};
+    cmpStruct(l, caso, pos, n);
+    printM(pos,n);
+    fexV =  fopen("V.txt","a");
+    printListaC(l,fexV);
     return 0;
 }
