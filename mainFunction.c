@@ -578,7 +578,7 @@ void printM(int** pos, int n){
     }fprintf(fp,"\n\n");
 }
 
-listaCompras* aux(listaCompras* l,int a, int b){
+listaCompras* aux(listaCompras* l,int a, int b, int x){
     listaCompras* lAux;
     lAux = malloc(sizeof(listaCompras));
     lAux->Compras=malloc(sizeof(CompraP));
@@ -587,18 +587,37 @@ listaCompras* aux(listaCompras* l,int a, int b){
     *(lAux->size)=b-a;
     int j=0,i1=0,** pos = posMatrix(1),caso[]={1};
     cmpStruct(lAux, caso, pos, 1);
-    while(i1 < pos[0][1]){
-        int i=0;
-        j=pos[2][i1];
-        *(((lAux->Compras)[j+i])->valC)=*(((lAux->Compras)[j+i])->precoUC)*(*(((lAux->Compras)[j+i])->unidadesC))*100;
-        i++;
-        while(i+j<pos[2][i1+1]){
-            *(((lAux->Compras)[j+i])->valC)=*(((lAux->Compras)[j+i])->precoUC)*(*(((lAux->Compras)[j+i])->unidadesC))*100;
-            *(((lAux->Compras)[j+i])->valC)+=*(((lAux->Compras)[j+i-1])->valC);
-            *(((lAux->Compras)[j+i-1])->valC)=0;
-            i++;
-        }i1++;
-    }return lAux;
+    switch(x){
+        case(12):
+            while(i1 <=pos[0][1]){
+                int i=0;
+                j=pos[2][i1];
+                *(((lAux->Compras)[j+i])->valC)=*(((lAux->Compras)[j+i])->precoUC)*(*(((lAux->Compras)[j+i])->unidadesC))*100;
+                i++;
+                while(i+j<pos[2][i1+1]){
+                    *(((lAux->Compras)[j+i])->valC)=*(((lAux->Compras)[j+i])->precoUC)*(*(((lAux->Compras)[j+i])->unidadesC))*100;
+                    *(((lAux->Compras)[j+i])->valC)+=*(((lAux->Compras)[j+i-1])->valC);
+                    *(((lAux->Compras)[j+i-1])->valC)=0;
+                    i++;
+                }i1++;
+            }
+            break;
+        case(10):
+            while(i1 <= pos[0][1]){
+                int i=0;
+                j=pos[2][i1];
+                *(((lAux->Compras)[j+i])->valC)=*(((lAux->Compras)[j+i])->unidadesC);
+                i++;
+                while(i+j<pos[2][i1+1]){
+                    *(((lAux->Compras)[j+i])->valC)=*(((lAux->Compras)[j+i])->unidadesC);
+                    *(((lAux->Compras)[j+i])->valC)+=*(((lAux->Compras)[j+i-1])->valC);
+                    *(((lAux->Compras)[j+i-1])->valC)=0;
+                    i++;
+                }i1++;
+            }
+            break;
+    }
+    return lAux;
 }
 
 listaCompras* ex2(listaCompras* l,char c){
@@ -988,6 +1007,50 @@ char*** ex9(listaCompras* l,char* p,int f){
     }return clientesPF;
 }
 
+char** ex10(listaCompras* l, char* c, int N){
+    listaCompras* lAux;
+    int i,j,k=0, ** pos = posMatrix(3),caso[]={50,6,5}, cId0 = c[0]-65,pc=0,q=0,** posAux = posMatrix(1),casoAux[]={8},a[6],b[6];
+    char **produtos;
+    produtos = malloc(pc * sizeof(char*));
+    cmpStruct(l, caso, pos, 3);
+    i = pos[3][cId0*12+(N-1)];
+    for (int j1 = 0; j1 < 6; j1++){
+        b[j1]=c[j1];
+        a[j1]=((*((l->Compras)+i))->clienteC)[j1];
+    }
+    while(cmp(a,b,6)<0){
+        i++;
+        for (int j1 = 0; j1 < 6; j1++){
+            a[j1]=((*((l->Compras)+i))->clienteC)[j1];
+        }
+    }
+    if (cmp(a,b,6)>0){
+        printf("\nO cliente introduzido nao efetuou compras nesse mes ou nao existe nos registos!\n");
+        return NULL;
+    }
+    q=i;
+    while(!cmp(a,b,6)){
+        q++;
+        for (int j1 = 0; j1 < 6; j1++){
+            a[j1]=((*((l->Compras)+q))->clienteC)[j1];
+        }
+    }
+    lAux=aux(l,i,q,10);
+    cmpStruct(lAux, casoAux, posAux, 1);
+    while(k<*(lAux->size)) {
+        if(*((*((lAux->Compras)+k))->valC)){
+            pc++;
+            produtos = realloc(produtos,pc * sizeof(char*));
+            produtos[pc-1]=((*((lAux->Compras)+k))->produtoC);
+        }k++;
+    }FILE * fex10;
+    fex10 =  fopen("Ex10.txt","a");
+    fprintf(fex10,"Produtos comprados pelo cliente %s no mes %d ordenados por unidades: \n",c,N);
+    for (int j = 0; j < pc; j++){
+        fprintf(fex10,"%s\n",produtos[j]);
+    }
+    return produtos;
+}
 
 char** ex12(listaCompras* l, char* c, int N){
     listaCompras* lAux;
@@ -1017,7 +1080,7 @@ char** ex12(listaCompras* l, char* c, int N){
             a[j1]=((*((l->Compras)+q))->clienteC)[j1];
         }
     }
-    lAux=aux(l,i,q);
+    lAux=aux(l,i,q,12);
     cmpStruct(lAux, casoAux, posAux, 1);
     while (k<N) {
         pc++;
@@ -1038,7 +1101,7 @@ char** ex12(listaCompras* l, char* c, int N){
 }
 
 int main(){
-    char** c,**p,*prod,**cEx5, **cEx4, **cEx12;
+    char** c,**p,*prod,**cEx5, **cEx4, **cEx10,**cEx12;
     listaCompras* v,*l,*lEx2,*lAux;
     cell *** Ex7;
     float* fEx3,*fEx8;
@@ -1068,13 +1131,14 @@ int main(){
     //printf("numero de vendas = %.1f, total faturado = %f\n",fEx8[1],fEx8[0]);
     //cEx9 = ex9(l,p[13056],2);
     char *t = "A1231";
-    cEx12 = ex12(l, t, 10);
-    //int n=3;
-    //int** pos = posMatrix(n),caso[]={50,5,9};
-    //cmpStruct(l, caso, pos, n);
-    //printM(pos,n);
-    //lAux = aux(l,0,*(l->size));
-    //fexV =  fopen("V.txt","a");
-    //printListaC(l,fexV);
+    cEx10 = ex10(l, t, 10);
+    //cEx12 = ex12(l, t, 10);
+    int n=3;
+    int** pos = posMatrix(n),caso[]={50,6,5};
+    cmpStruct(l, caso, pos, n);
+    printM(pos,n);
+    //lAux = aux(l,0,*(l->size),12);
+    fexV =  fopen("V.txt","a");
+    printListaC(l,fexV);
     return 0;
 }
