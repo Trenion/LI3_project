@@ -101,7 +101,7 @@ int cmpStruct8(const void *a, const void *b)
 { 
     CompraP * ia = (CompraP*)a;
     CompraP * ib = (CompraP*)b;
-    return (*((*ia)->valC) - *((*ib)->valC));
+    return (*((*ib)->valC) - *((*ia)->valC));
 }
 
 //funcao de comparacao para o qsort de struct compra em funcao da faturação (preço * unidades)
@@ -131,7 +131,6 @@ int cmp(int a[], int b[], int c){
         if(r)return r;       
     }return r;
 }
-
 
 //funcao que faz multiplas ordenacoes utilizando o qsort entre posicoes obtidas pela aterior ordenacao
 //e gera uma matriz de posicoes para cada nivel de ordenacao pode ser testada na lista de vendas no ficheiro de texto
@@ -579,6 +578,29 @@ void printM(int** pos, int n){
     }fprintf(fp,"\n\n");
 }
 
+listaCompras* aux(listaCompras* l,int a, int b){
+    listaCompras* lAux;
+    lAux = malloc(sizeof(listaCompras));
+    lAux->Compras=malloc(sizeof(CompraP));
+    lAux->Compras=(l->Compras)+a;
+    lAux->size=malloc(sizeof(int));
+    *(lAux->size)=b-a;
+    int j=0,i1=0,i2=b-a,** pos = posMatrix(1),caso[]={1};
+    cmpStruct(lAux, caso, pos, 1);
+    while(i1 < i2){
+        int i=0;
+        j=pos[2][i1];
+        *(((lAux->Compras)[j+i])->valC)=*(((lAux->Compras)[j+i])->precoUC)*(*(((lAux->Compras)[j+i])->unidadesC))*100;
+        i++;
+        while(i+j<pos[2][i1+1]){
+            *(((lAux->Compras)[j+i])->valC)=*(((lAux->Compras)[j+i])->precoUC)*(*(((lAux->Compras)[j+i])->unidadesC))*100;
+            *(((lAux->Compras)[j+i])->valC)+=*(((lAux->Compras)[j+i-1])->valC);
+            *(((lAux->Compras)[j+i-1])->valC)=0;
+            i++;
+        }i1++;
+    }return lAux;
+}
+
 listaCompras* ex2(listaCompras* l,char c){
     FILE* fex2;
     fex2 =  fopen("Ex2.txt","a");
@@ -967,33 +989,47 @@ char*** ex9(listaCompras* l,char* p,int f){
 }
 
 
-char** ex12(listaCompras* l, char* p, int N){
-    
-    int i,j,k=0, ** pos = posMatrix(3),caso[]={50,5,9}, cId0 = p[0]-65, pc=0;
-    char **produtos,a[6],b[6];
+char** ex12(listaCompras* l, char* c, int N){
+    listaCompras* lAux;
+    int i,j,k=0, ** pos = posMatrix(2),caso[]={50,5}, cId0 = c[0]-65,pc=0,q=0,** posAux = posMatrix(1),casoAux[]={8},a[6],b[6];
+    char **produtos;
     produtos = malloc(pc * sizeof(char*));
-    cmpStruct(l, caso, pos, 3);
+    cmpStruct(l, caso, pos, 2);
     i = pos[2][cId0];
-    strncpy(a,((*((l->Compras)+i))->clienteC),6);
-    strncpy(b,((*((l->Compras)))->clienteC),6);
-    while(strncmp(a,p,6)<0){
+    for (int j1 = 0; j1 < 6; j1++){
+        b[j1]=c[j1];
+        a[j1]=((*((l->Compras)+i))->clienteC)[j1];
+    }
+    while(cmp(a,b,6)<0){
         i++;
-        strncpy(a,((*((l->Compras)+i))->clienteC),6);
+        for (int j1 = 0; j1 < 6; j1++){
+            a[j1]=((*((l->Compras)+i))->clienteC)[j1];
+        }
     }
-    if (strncmp(a,p,6)>0) printf("\nO cliente introduzido não efetuou compras ou não existe nos registos!\n");
-    else {
-        while (!strncmp(a,p,6) && k<N) {
-            pc++;
-            produtos = realloc(produtos,pc * sizeof(char*));
-            produtos[k]=((*((l->Compras)+i))->produtoC);
-            k++;i++;
-            }
+    if (cmp(a,b,6)>0){
+        printf("\nO cliente introduzido nao efetuou compras ou nao existe nos registos!\n");
+        return NULL;
     }
-    if (k<N) printf("\nO cliente introduzido não efetuou um número de %d compras.", N);
+    q=i;
+    while(!cmp(a,b,6)){
+        q++;
+        for (int j1 = 0; j1 < 6; j1++){
+            a[j1]=((*((l->Compras)+q))->clienteC)[j1];
+        }
+    }
+    lAux=aux(l,i,q);
+    cmpStruct(lAux, casoAux, posAux, 1);
+    while (k<N) {
+        pc++;
+        produtos = realloc(produtos,pc * sizeof(char*));
+        produtos[k]=((*((lAux->Compras)+k))->produtoC);
+        k++;
+    }
+    if (k<N) printf("\nO cliente introduzido nao efetuou um número de %d compras.", N);
     else {
-        FILE* fex12;
+        FILE * fex12;
         fex12 =  fopen("Ex12.txt","a");
-        fprintf(fex12,"%d produtos onde o cliente %s gastou mais dinheiro: \n\n", N, p);
+        fprintf(fex12,"%d produtos onde o cliente %s gastou mais dinheiro: \n", N, c);
         for (int j = 0; j < k; j++){
             fprintf(fex12,"%s\n",produtos[j]);
         }
@@ -1037,6 +1073,7 @@ int main(){
     int** pos = posMatrix(n),caso[]={50,5,9};
     cmpStruct(l, caso, pos, n);
     printM(pos,n);
+    //aux(l);
     fexV =  fopen("V.txt","a");
     printListaC(l,fexV);
     return 0;
