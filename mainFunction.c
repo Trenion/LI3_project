@@ -585,9 +585,9 @@ listaCompras* aux(listaCompras* l,int a, int b){
     lAux->Compras=(l->Compras)+a;
     lAux->size=malloc(sizeof(int));
     *(lAux->size)=b-a;
-    int j=0,i1=0,i2=b-a,** pos = posMatrix(1),caso[]={1};
+    int j=0,i1=0,** pos = posMatrix(1),caso[]={1};
     cmpStruct(lAux, caso, pos, 1);
-    while(i1 < i2){
+    while(i1 < pos[0][1]){
         int i=0;
         j=pos[2][i1];
         *(((lAux->Compras)[j+i])->valC)=*(((lAux->Compras)[j+i])->precoUC)*(*(((lAux->Compras)[j+i])->unidadesC))*100;
@@ -1039,15 +1039,15 @@ char** ex12(listaCompras* l, char* c, int N){
 
 int main(){
     char** c,**p,*prod,**cEx5, **cEx4, **cEx12;
-    listaCompras* v,*l,*lEx2;
+    listaCompras* v,*l,*lEx2,*lAux;
     cell *** Ex7;
     float* fEx3,*fEx8;
     int mes,*cpEx6;
     FILE *fp,*fp_txt,*fc,*fc_txt,*fv,*fexV;
     fp = fopen("Produtos.txt","r");
-    fp_txt = fopen("P.txt","a");
+    //fp_txt = fopen("P.txt","a");
     fc = fopen("Clientes.txt","r");
-    fc_txt = fopen("C.txt","a");
+    //fc_txt = fopen("C.txt","a");
     fv = fopen("Vendas_1M.txt","r");
     p = arrayP(fp,fp_txt);
     c = arrayC(fc,fc_txt);
@@ -1069,12 +1069,12 @@ int main(){
     //cEx9 = ex9(l,p[13056],2);
     char *t = "A1231";
     cEx12 = ex12(l, t, 10);
-    int n=3;
-    int** pos = posMatrix(n),caso[]={50,5,9};
-    cmpStruct(l, caso, pos, n);
-    printM(pos,n);
-    //aux(l);
-    fexV =  fopen("V.txt","a");
-    printListaC(l,fexV);
+    //int n=3;
+    //int** pos = posMatrix(n),caso[]={50,5,9};
+    //cmpStruct(l, caso, pos, n);
+    //printM(pos,n);
+    //lAux = aux(l,0,*(l->size));
+    //fexV =  fopen("V.txt","a");
+    //printListaC(l,fexV);
     return 0;
 }
