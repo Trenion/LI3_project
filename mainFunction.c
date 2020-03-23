@@ -589,32 +589,62 @@ listaCompras* aux(listaCompras* l,int a, int b, int x){
     cmpStruct(lAux, caso, pos, 1);
     switch(x){
         case(12):
-            while(i1 <=pos[0][1]){
-                int i=0;
-                j=pos[2][i1];
-                *(((lAux->Compras)[j+i])->valC)=*(((lAux->Compras)[j+i])->precoUC)*(*(((lAux->Compras)[j+i])->unidadesC))*100;
-                i++;
-                while(i+j<pos[2][i1+1]){
-                    *(((lAux->Compras)[j+i])->valC)=*(((lAux->Compras)[j+i])->precoUC)*(*(((lAux->Compras)[j+i])->unidadesC))*100;
-                    *(((lAux->Compras)[j+i])->valC)+=*(((lAux->Compras)[j+i-1])->valC);
-                    *(((lAux->Compras)[j+i-1])->valC)=0;
-                    i++;
-                }i1++;
-            }
+            if(*(l->size)-*(lAux->size)){
+            	while(i1 <= pos[0][1]){
+                	int i=0;
+                	j=pos[2][i1];
+                	*(((lAux->Compras)[j+i])->valC)=*(((lAux->Compras)[j+i])->precoUC)*(*(((lAux->Compras)[j+i])->unidadesC))*100;
+                	i++;
+                	while(i+j<pos[2][i1+1]){
+                    	*(((lAux->Compras)[j+i])->valC)=*(((lAux->Compras)[j+i])->precoUC)*(*(((lAux->Compras)[j+i])->unidadesC))*100;
+                    	*(((lAux->Compras)[j+i])->valC)+=*(((lAux->Compras)[j+i-1])->valC);
+                    	*(((lAux->Compras)[j+i-1])->valC)=0;
+                    	i++;
+                	}i1++;
+            	}
+        	}else{
+        		while(i1 < pos[0][1]){
+                	int i=0;
+                	j=pos[2][i1];
+                	*(((lAux->Compras)[j+i])->valC)=*(((lAux->Compras)[j+i])->precoUC)*(*(((lAux->Compras)[j+i])->unidadesC))*100;
+                	i++;
+                	while(i+j<pos[2][i1+1]){
+                    	*(((lAux->Compras)[j+i])->valC)=*(((lAux->Compras)[j+i])->precoUC)*(*(((lAux->Compras)[j+i])->unidadesC))*100;
+                    	*(((lAux->Compras)[j+i])->valC)+=*(((lAux->Compras)[j+i-1])->valC);
+                    	*(((lAux->Compras)[j+i-1])->valC)=0;
+                    	i++;
+                	}i1++;
+            	}
+        	}
             break;
         case(10):
-            while(i1 <= pos[0][1]){
-                int i=0;
-                j=pos[2][i1];
-                *(((lAux->Compras)[j+i])->valC)=*(((lAux->Compras)[j+i])->unidadesC);
-                i++;
-                while(i+j<pos[2][i1+1]){
-                    *(((lAux->Compras)[j+i])->valC)=*(((lAux->Compras)[j+i])->unidadesC);
-                    *(((lAux->Compras)[j+i])->valC)+=*(((lAux->Compras)[j+i-1])->valC);
-                    *(((lAux->Compras)[j+i-1])->valC)=0;
-                    i++;
-                }i1++;
-            }
+            if(*(l->size)-*(lAux->size)){
+            	while(i1 <= pos[0][1]){
+        	        int i=0;
+    	            j=pos[2][i1];
+            	    *(((lAux->Compras)[j+i])->valC)=*(((lAux->Compras)[j+i])->unidadesC);
+                	i++;
+            	    while(i+j<pos[2][i1+1]){
+        	            *(((lAux->Compras)[j+i])->valC)=*(((lAux->Compras)[j+i])->unidadesC);
+    	                *(((lAux->Compras)[j+i])->valC)+=*(((lAux->Compras)[j+i-1])->valC);
+	                    *(((lAux->Compras)[j+i-1])->valC)=0;
+                    	i++;
+                	}i1++;
+            	}
+        	}else{
+        		while(i1 < pos[0][1]){
+        	        int i=0;
+    	            j=pos[2][i1];
+            	    *(((lAux->Compras)[j+i])->valC)=*(((lAux->Compras)[j+i])->unidadesC);
+                	i++;
+            	    while(i+j<pos[2][i1+1]){
+        	            *(((lAux->Compras)[j+i])->valC)=*(((lAux->Compras)[j+i])->unidadesC);
+    	                *(((lAux->Compras)[j+i])->valC)+=*(((lAux->Compras)[j+i-1])->valC);
+	                    *(((lAux->Compras)[j+i-1])->valC)=0;
+                    	i++;
+                	}i1++;
+            	}
+        	}
             break;
     }
     return lAux;
@@ -1204,22 +1234,19 @@ int main(){
     //fEx8 = ex8(l,2,7);
     //printf("numero de vendas = %.1f, total faturado = %f\n",fEx8[1],fEx8[0]);
     //cEx9 = ex9(l,p[13056],2);
-//    char *t = "A1231";
-//    cEx10 = ex10(l, t, 10);
-    cEx11 = ex11(l, 10);
-    //cEx12 = ex12(l, t, 10);
-//    int n=3;
-//    int** pos = posMatrix(n),caso[]={50,6,5};
-//    cmpStruct(l, caso, pos, n);
-//    printM(pos,n);
-//
-//
-//    fexV =  fopen("V.txt","a");
-//    printListaC(l,fexV);
-//
-//    lAux = aux(l,0,891107,12);
-//    fexV1 =  fopen("V1.txt","a");
-//    printListaC(lAux,fexV1);
+    //char *t = "A1231";
+    //cEx10 = ex10(l, t, 10);
+//    cEx11 = ex11(l, 10);
+//    cEx12 = ex12(l, t, 10);
+    //int n=3;
+    //int** pos = posMatrix(n),caso[]={50,6,5};
+    //cmpStruct(l, caso, pos, n);
+    //printM(pos,n);
+    fexV =  fopen("V.txt","a");
+    printListaC(l,fexV);
+    lAux = aux(l,0,*(l->size),12);
+    fexV1 =  fopen("V1.txt","a");
+    printListaC(lAux,fexV1);
     
     return 0;
 }
