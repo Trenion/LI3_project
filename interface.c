@@ -73,23 +73,25 @@ SGV loadSGVFromFiles(SGV sgv, char* filesFolderPath);
 
 void texto(){
 	int x;
-	printf("Bem vindo, utilizador.\n"
+	printf("Bem vindo, utilizador!\n"
 		"Iniciando o Sistema de Gestao de Vendas,(SGV).\n"
-		"Que acao deseja que seja realizada\n"
-		"Precione (1) : para receber os produtos que comecem por uma letra;\n"//<?> getProductsStartedByLetter(SGV sgv, char letter);
-		"Precione (2) : para receber as vendas e lucros de um produto num certo mes;\n"//<?> getProductSalesAndProfit(SGV sgv, char* productID, int month);
-		"Precione (3) : para receber os produtos que nunca foram vendidos num filial;\n"//<?> getProductsNeverBought(SGV sgv, int branchID);
-		"Precione (4) : para receber todos os clientes de todos os filiais;\n"//<?> getClientsOfAllBranches(SGV sgv);
-		"Precione (5) : para receber os produtos nunca comprados e os clientes que nunca compraram;\n"//<?> getClientsAndProductsNeverBoughtCount(SGV sgv);
-		"Precione (6) : para receber os produtos comprados por um cliente;\n"//<?> getProductsBoughtByClient(SGV sgv, char* clientID);
-		"Precione (7) : para receber as vendas e os lucros entre dois meses;\n"//<?> getSalesAndProfit(SGV sgv, int minMonth, int maxMonth);
-		"Precione (8) : para receber os cliente que compraram um produto;\n"//<?> getProductBuyers(SGV sgv, char* productID, int branch);
-		"Precione (9) : para receber o produto favorito de um comprador;\n"//<?> getClientFavoriteProduct(SGV sgv, char* clientID, int branch);
-		"Precione (10) : para receber os produtos mais vendidos;\n"//<?> getTopSelledProducts(SGV sgv, int limit);
-		"Precione (11) : para receber os produtos mais lucrativos de um cliente;\n"//<?> getClientTopProfitProducts(SGV sgv, char* clientID, int limit);
-		"Precione (12) : para ;\n"
-		"Precione (13) : para ;\n"
-		"Precione (0) : para Fechar o SGV.\n");
+        "\n ... \n\n"
+           
+		"Por favor, insira o número correspondente à ação que pretende.\n\n"
+		"(1): para receber os produtos que comecem por uma letra;\n"//<?> getProductsStartedByLetter(SGV sgv, char letter);
+		"(2): para receber as vendas e lucros de um produto num certo mes;\n"//<?> getProductSalesAndProfit(SGV sgv, char* productID, int month);
+		"(3): para receber os produtos que nunca foram vendidos num filial;\n"//<?> getProductsNeverBought(SGV sgv, int branchID);
+		"(4): para receber todos os clientes de todos os filiais;\n"//<?> getClientsOfAllBranches(SGV sgv);
+		"(5): para receber os produtos nunca comprados e os clientes que nunca compraram;\n"//<?> getClientsAndProductsNeverBoughtCount(SGV sgv);
+		"(6): para receber os produtos comprados por um cliente;\n"//<?> getProductsBoughtByClient(SGV sgv, char* clientID);
+		"(7): para receber as vendas e os lucros entre dois meses;\n"//<?> getSalesAndProfit(SGV sgv, int minMonth, int maxMonth);
+		"(8): para receber os cliente que compraram um produto;\n"//<?> getProductBuyers(SGV sgv, char* productID, int branch);
+		"(9): para receber o produto favorito de um comprador;\n"//<?> getClientFavoriteProduct(SGV sgv, char* clientID, int branch);
+		"(10): para receber os produtos mais vendidos;\n"//<?> getTopSelledProducts(SGV sgv, int limit);
+		"(11): para receber os produtos mais lucrativos de um cliente;\n"//<?> getClientTopProfitProducts(SGV sgv, char* clientID, int limit);
+		"(12): para ;\n"
+		"(13): para ;\n"
+		"(0): para Fechar o SGV.\n");
 	scanf("%d \n",&x);
 	opcoes(x);
 
@@ -320,5 +322,5 @@ int opcoesVendas(int x){
 
 
 
-
+int main()
 
