@@ -1,326 +1,361 @@
+
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
-
-//no interface s]o se pode interagir com:
-//////////catalogo dos produtos
-//////////catalogo do clientes 
-//////////faturacao global
-//////////gestao filial 1
-//////////gestao filial 2 
-//////////gestao filial 3 
-/*
-void initSGV(){
-	int x;
-	printf("Bem vindo, utilizador.\n"
-		"Iniciando o Sistema de Gestao de Vendas,(SGV).\n"
-		"Que acao deseja que seja realizada\n"
-		"Precione (1) : para aceder ao Catalogo dos Produtos;\n"
-		"Precione (2) : para aceder ao Catalogo dos Clientes;\n"
-		"Precione (3) : para aceder ao Faturacao Global;\n"
-		"Precione (4) : para aceder ao Gestao Filial 1;\n"
-		"Precione (5) : para aceder ao Gestao Filial 2;\n"
-		"Precione (6) : para aceder ao Gestao Filial 3;\n"
-		"Precione (0) : para Fechar o SGV.\n");
-	scanf("%d",&x);
-	opcoes(x);
-
+void iniciar(){
+    printf("\n A iniciar: SGV - Sistema de Gestão de Vendas.\n"
+           "\n ... \n"
+           "\n Bem vindo, utilizador!\n\n");
 }
-
-int opcoes(int x){
-	switch(x){
-		case(x==1):{};
-		case(x==2):{};
-		case(x==3):{};
-		case(x==4):{};
-		case(x==5):{};
-		case(x==6):{};
-		case(x==0):
-			destroySVG();
-		default
-			printf("Por favor selecione uma das opcoes validas.\n");
-			opcoes(x);
-			
-	}
-	return 0;
-}
-
-*/
-
-
-
-
-
-SGV initSGV();
-SGV destroySGV();
-SGV loadSGVFromFiles(SGV sgv, char* filesFolderPath);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void texto(){
-	int x;
-	printf("Bem vindo, utilizador!\n"
-		"Iniciando o Sistema de Gestao de Vendas,(SGV).\n"
-        "\n ... \n\n"
            
-		"Por favor, insira o número correspondente à ação que pretende.\n\n"
-		"(1): para receber os produtos que comecem por uma letra;\n"//<?> getProductsStartedByLetter(SGV sgv, char letter);
-		"(2): para receber as vendas e lucros de um produto num certo mes;\n"//<?> getProductSalesAndProfit(SGV sgv, char* productID, int month);
-		"(3): para receber os produtos que nunca foram vendidos num filial;\n"//<?> getProductsNeverBought(SGV sgv, int branchID);
-		"(4): para receber todos os clientes de todos os filiais;\n"//<?> getClientsOfAllBranches(SGV sgv);
-		"(5): para receber os produtos nunca comprados e os clientes que nunca compraram;\n"//<?> getClientsAndProductsNeverBoughtCount(SGV sgv);
-		"(6): para receber os produtos comprados por um cliente;\n"//<?> getProductsBoughtByClient(SGV sgv, char* clientID);
-		"(7): para receber as vendas e os lucros entre dois meses;\n"//<?> getSalesAndProfit(SGV sgv, int minMonth, int maxMonth);
-		"(8): para receber os cliente que compraram um produto;\n"//<?> getProductBuyers(SGV sgv, char* productID, int branch);
-		"(9): para receber o produto favorito de um comprador;\n"//<?> getClientFavoriteProduct(SGV sgv, char* clientID, int branch);
-		"(10): para receber os produtos mais vendidos;\n"//<?> getTopSelledProducts(SGV sgv, int limit);
-		"(11): para receber os produtos mais lucrativos de um cliente;\n"//<?> getClientTopProfitProducts(SGV sgv, char* clientID, int limit);
-		"(12): para ;\n"
-		"(13): para ;\n"
-		"(0): para Fechar o SGV.\n");
-	scanf("%d \n",&x);
-	opcoes(x);
+void menu(){
+        printf(" A seguir apresenta-se o menu deste sistema.\n\n"
+               "\n  1: Carregar registos no servidor.\n"
+               "\n  2: Registos de produtos ordenados por uma dada letra.\n"
+               "\n  3: Registos de venda e faturação de um dado produto num dado mês.\n"
+               "\n  4: Registos de produtos não vendidos.\n"
+               "\n  5: Registos de clientes que efetuaram compras em todas as filiais.\n"
+               "\n  6: Registos de produtos e clientes sem menções de venda e compra.\n"
+               "\n  7: Registos de compra por um dado cliente.\n"
+               "\n  8: Registos de vendas e lucros entre dois dados meses.\n"
+               "\n  9: Registos de clientes que compraram um dado produto numa dada filial, divididos por tipo.\n"
+               "\n  10: Registos de compra de um dado cliente num dado mês, por ordem decrescente de quantidade.\n"
+               "\n  11: Registos de produtos mais vendidos.\n"
+               "\n  12: Registos de maior faturação de um dado cliente.\n"
+               "\n  13: Registos de produtos em stock.\n"
+               "\n  14: Registos de clientes.\n"
+               "\n  15: Registos de vendas.\n"
+               "\n  0: Encerrar SGV - Sistema de Gestão de Vendas.\n\n  ");
+}
 
+//CARACTERES - Certo
+
+char validaCaractere(char c){
+    if (c>='A' && c<='Z') {
+        return c;
+    }
+    printf("Entrada inválida.\n");
+    return '0';
+}
+
+char caractereInvalido(){
+    char c;
+    scanf(" %c", &c);
+    return validaCaractere(c);
+}
+
+//MES - Certo
+
+int validaMes(int c){
+    if (c>=1 && c<=12) {
+        return c;
+    }
+    printf("Entrada inválida.\n");
+    return 0;
+}
+
+int mesInvalido(){
+    int c;
+    scanf(" %d", &c);
+    return validaMes(c);
+}
+
+//FILIAIS - Certo
+
+int validaFilial(int c){
+    if (c==1 || c==2 || c==3) {
+        return c;
+    }
+    printf("Entrada inválida.\n");
+    return 0;
+}
+
+int filialInvalida(){
+    int c;
+    scanf(" %d", &c);
+    return validaFilial(c);
+}
+
+//FILIAL OU GLOBAL - Certo
+
+char validaFilialGlobal(char c){
+    if (c=='F' || c=='G') {
+        return c;
+    }
+    printf("Entrada inválida.\n");
+    return '0';
+}
+
+char filialGlobalInvalida(){
+    char c;
+    scanf(" %c", &c);
+    if (c<'A' || c>'Z') c='0';
+    return validaFilialGlobal(c);
+}
+
+//NÚMERO - Certo
+
+int validaNumero(int c){
+    if (c>=1 && c<=15000) {
+        return c;
+    }
+    printf("Entrada inválida.\n");
+    return 0;
+}
+
+int numeroInvalido(){
+    int c;
+    scanf(" %d", &c);
+    return validaMes(c);
+}
+
+//PRODUTOS - Certo
+
+char* validaProduto(char c[]){
+    char* p = malloc(sizeof(char*));
+    int i;
+    if (validaP(c)==1) {
+        for (i=0; i<6;i++) p[i]=c[i];
+        return p;
+    }
+    printf("Entrada inválida.\n");
+    return NULL;
+}
+
+char* produtoInvalido(){
+    int i;
+    char c, prod[10];
+    for (i=0; (c = getchar()) != '\n'; i++) prod[i]=c;
+    if (i>5) prod[0]='0';
+    return validaProduto(prod);
+}
+
+//CLIENTES - Certo
+
+char* validaCliente(char c[]){
+    char* p = malloc(sizeof(char*));
+    int i;
+    if (validaC(c)==1) {
+        for (i=0; i<5;i++) p[i]=c[i];
+        return p;
+    }
+    printf("Entrada inválida.\n");
+    return NULL;
+}
+
+char* clienteInvalido(){
+    int i;
+    char c, prod[6];
+    for (i=0; (c = getchar()) != '\n'; i++) prod[i]=c;
+    if (i>4) prod[0]='0';
+    return validaCliente(prod);
+}
+
+void opcoes(){
+    menu();
+    printf(" Por favor, insira o número correspondente à ação que pretende.\n\n");
+    int op;
+    scanf(" %d",&op);
+    
+    int mes, mes1, filial, h;
+    char x, *p = malloc(sizeof(char*));
+    switch(op){
+            
+        case(1):{
+            
+//            Função do exercício 1
+            opcoes();
+       };
+        case(2):{
+            x='0';
+            while ((getchar()) != '\n');
+            printf("\nIntroduza um caractere válido. Hint: 1 letra maiúscula.\n");
+            while (x=='0') {
+                x = caractereInvalido();
+                if (x!='0') break;
+            }
+            printf("\nRegistos de produtos ordenados pela letra inserida.\n");
+            
+//            Função do exercício 2
+            opcoes();
+        };
+        case(3):{
+            mes=0; p = NULL;
+            while ((getchar()) != '\n');
+            printf("\nIntroduza um produto válido. Hint: 2 letras maiúsculas seguidas de 4 números.\n");
+            while (p==NULL) {
+                p = produtoInvalido();
+                if (p!=NULL) break;
+            }
+            printf("\nIntroduza um mês válido.\n");
+            while (mes==0) {
+                mes = mesInvalido();
+                if (mes!=0) break;
+            }
+            printf("\nRegistos de venda e faturação do produto e mês indicados.\n");
+
+//            Função do exercício 3
+            opcoes();
+        };
+        case(4):{
+            x='0';
+            while ((getchar()) != '\n');
+            printf("\nIntroduza um tipo de distribuição válido. Hint: F para dados filial a filial, G para dados globais.\n");
+            while (x=='0') {
+                x = filialGlobalInvalida();
+                if (x!='0') break;
+            }
+            printf("\nRegistos de produtos não vendidos.\n");
+            
+//            Função do exercício 4
+            opcoes();
+        };
+        case(5):{
+            while ((getchar()) != '\n');
+            printf("\nRegistos de clientes que efetuaram compras em todas as filiais.\n");
+            
+//            Função do exercício 5
+            opcoes();
+        };
+        case(6):{
+            while ((getchar()) != '\n');
+            printf("\nRegistos de produtos e clientes sem menções de venda e compra.\n");
+
+//            Função do exercício 6
+            opcoes();
+        };
+        case(7):{
+            p = NULL;
+            while ((getchar()) != '\n');
+            printf("\nIntroduza um cliente válido. Hint: 1 letra maiúscula seguida de 4 números.\n");
+            while (p==NULL) {
+                p = clienteInvalido();
+                if (p!=NULL) break;
+            }
+            printf("\nRegistos de compra pelo cliente inserido.\n");
+
+//            Função do exercício 7
+            opcoes();
+        };
+        case(8):{
+            mes = 0; mes1 = 0;
+            while ((getchar()) != '\n');
+            printf("\nIntroduza um mês válido.\n");
+            while (mes==0) {
+                mes = mesInvalido();
+                if (mes!=0) break;
+            }
+            printf("\nIntroduza um mês válido.\n");
+            while (mes1==0) {
+                mes1 = mesInvalido();
+                if (mes1!=0) break;
+            }
+            printf("\nRegistos de vendas e lucros entre dois dados meses.\n");
+            
+//            Função do exercício 8
+            opcoes();
+        };
+        case(9):{
+            p=NULL; filial=0;
+            while ((getchar()) != '\n');
+            printf("\nIntroduza um produto válido. Hint: 2 letras maiúsculas seguidas de 4 números.\n");
+            while (p==NULL) {
+                p = produtoInvalido();
+                if (p!=NULL) break;
+            }
+            printf("\nIntroduza uma filial válida.\n");
+            while (filial==0) {
+                filial = filialInvalida();
+                if (filial!=0) break;
+            }
+            printf("\nRegistos de clientes que compraram o produto na filial inseridos, divididos por tipo.\n");
+
+//            Função do exercício 9
+            opcoes();
+        };
+        case(10):{
+            p = NULL;mes=0;
+            while ((getchar()) != '\n');
+            printf("\nIntroduza um cliente válido. Hint: 1 letra maiúscula seguida de 4 números.\n");
+            while (p==NULL) {
+                p = clienteInvalido();
+                if (p!=NULL) break;
+            }
+            printf("\nIntroduza um mês válido.\n");
+            while (mes==0) {
+                mes = mesInvalido();
+                if (mes!=0) break;
+            }
+            printf("\nRegistos de compra do cliente no mês inseridos, por ordem decrescente de quantidade.\n");
+
+//            Função do exercício 10
+            opcoes();
+        };
+        case(11):{
+            h=0;
+            printf("\nIntroduza um número inteiro válido.\n");
+            while (h==0) {
+                h = numeroInvalido();
+                if (h!=0) break;
+            }
+            printf("\nRegistos do número inserido de produtos mais vendidos, por ordem decrescente de faturação.\n");
+            
+//            Função do exercício 11
+            opcoes();
+        };
+        case(12):{
+            p = NULL;h=0;
+            while ((getchar()) != '\n');
+            printf("\nIntroduza um cliente válido. Hint: 1 letra maiúscula seguida de 4 números.\n");
+            while (p==NULL) {
+                p = clienteInvalido();
+                if (p!=NULL) break;
+            }
+            printf("\nIntroduza um número inteiro válido.\n");
+            while (h==0) {
+                h = numeroInvalido();
+                if (h!=0) break;
+            }
+            printf("\nRegistos do número de produtos de maior faturação do cliente inseridos.\n");
+
+//            Função do exercício 12
+            opcoes();
+        };
+        case(13):{
+            
+//            Função de print dos produtos
+            opcoes();
+        };
+        case(14):{
+
+//          Função de print dos clientes
+            opcoes();
+        };
+        case(15):{
+
+//            Função de print das vendas
+            opcoes();
+        };
+        case(0):{
+            
+//            Função que apaga tudo o que foi feito
+            break;
+        };
+        default:{
+            printf("Entrada inválida.\n");
+            opcoes();
+        }
+    }
 }
 
 
-int opcoes(int x){
-	switch(x){
-		case(1):{
-			char letra;
-			printf("Escolha a letra para procurar nos produtos.\n");
-			scanf("%c \n",&letra);
-			letta = validarCaracterIntroduzido(letra);
-			getProductsStartedByLetter(SGV sgv, letra );
-		};
-		case(2):{
-			char* identificacaoDoProduto;
-			int mes;
-			printf("Escolha o produto que quer procurar.\n");
-			scanf("%s \n",&identificacaoDoProduto);
-			identificacaoDoProduto = validarIdentificacaoProdutoIntroduzido(identificacaoDoProduto);
-			printf("Digite o mes a procurar.\n");
-			scanf("%d \n",&mes);
-			mes = validarMesIntroduzido(mes);
-			getProductSalesAndProfit(SGV sgv, identificacaoDoProduto, mes);
-		};
-		case(x==3):{
-			int identificacaoDoFilial;
-			printf("Digite o filial a procurar.\n");
-			scanf("%d \n",&identificacaoDoFilial);
-			identificacaoDoFilial = validarFilialIntroduzido (identificacaoDoFilial);
-			getProductsNeverBought(SGV sgv, identificacaoDoFilial);
-		};
-		case(x==4):{
-			printf("Apresentando os clientes de todos os filiais.\n");
-			getClientsOfAllBranches(SGV sgv);
-		};
-		case(x==5):{
-			printf("Apresentando os clientes que nunca compraram e os produtos nunca comprados.\n");
-			getClientsAndProductsNeverBoughtCount(SGV sgv);//<<<<<<<<<<<<<<<<<<<<-----------------------------
-		};
-		case(x==6):{
-			char* identificacaoDoCliente;
-			printf("Escreva a identificacao do cliente que quer procurar.\n");
-			scanf("%s \n",&identificacaoDoCliente);
-			identificacaoDoCliente = validarIdentificacaoClienteIntroduzido(identificacaoDoCliente);
-			getProductsBoughtByClient(SGV sgv, identificacaoDoCliente);
-		};
-		case(x==7):{
-			int mesMAX;
-			int mesMIN;
-			printf("Digite o mes inicial.\n");
-			scanf("%d \n",&mesMIN);
-			mesMIN = validarMesIntroduzido(mesMIN);
-			printf("Digite o mes final.\n");
-			scanf("%d \n",&mesMAX);
-			mesMAX = validarMesIntroduzido(mesMAX);
-			if (mesMAX<mesMIN) getSalesAndProfit(SGV sgv, mesMAX, mesMIN);
-			else getSalesAndProfit(SGV sgv, mesMIN, mesMAX);
-		};
-		case(x==8):{
-			char* identificacaoDoProduto;
-			int filial;
-			printf("Escolha o produto que quer procurar.\n");
-			scanf("%s \n",&identificacaoDoProduto);
-			identificacaoDoProduto = validarIdentificacaoProdutosIntroduzido(identificacaoDoProduto);
-			printf("Digite o filial a procurar.\n");
-			scanf("%d \n",&filial);
-			filial=validarFilialIntroduzido (filial);
-			getProductBuyers(SGV sgv, identificacaoDoProduto, filia);
-		};
-		case(x==9):{
-			char* identificacaoDoCliente;
-			int filial;
-			printf("Escolha o cliente que quer procurar.\n");
-			scanf("%s \n",&identificacaoDoCliente);
-			identificacaoDoCliente = validarIdentificacaoClienteIntroduzido(identificacaoDoCliente);
-			printf("Digite o filial a procurar.\n");
-			scanf("%d \n",&filial);
-			filial=validarFilialIntroduzido (filial);
-			getClientFavoriteProduct(SGV sgv, identificacaoDoCliente, filial);
-		};
-		case(x==10):{
-			int limite;
-			printf("Digite o limite do top dos produtos mais vendidos.\n");
-			scanf("%d \n",&filial);
-			getTopSelledProducts(SGV sgv, limite);
-		};
-		case(x==11):{
-			char* identificacaoDoCliente;
-			int filial;
-			printf("Escolha o cliente que quer procurar.\n");
-			scanf("%s \n",&identificacaoDoCliente);
-			identificacaoDoCliente = validarIdentificacaoClienteIntroduzido(identificacaoDoCliente);
-			printf("Digite o filial a procurar.\n");
-			scanf("%d \n",&filial);
-			filial=validarFilialIntroduzido (filial);
-			getClientTopProfitProducts(SGV sgv, identificacaoDoCliente, filial);
-		};
-		case(x==12):{};
-		case(x==13):{};
-		case(x==0):
-			destroySVG();
-		default
-			printf("Por favor selecione uma das opcoes validas.\n");
-			opcoes(x);
-	}
-	return 0;
+
+int main() {
+
+    texto();
+    opcoes();
+    return 0;
 }
-
-
-
-char validarCaracterIntroduzido( char letra){
-	if(isAlpha(letra)==1 && isUpper(letra)==1)return letra;
-	else{
-		printf("Input Invalido.\n");
-		printf("Selecione uma letra maiuscula para seguir a opcao.\n");
-		scanf("%c \n",&letra);
-		validarCaracterIntroduzido(letra);
-	}
-	
-}
-
-
-int validarFilialIntroduzido (int x){
-	if(x==1 || x==2 || x==3)return x;
-	else{
-		printf("Input Invalido.\n");
-		printf("Selecione um filial (1,2 ou 3) para seguir a opcao.\n");
-		scanf("%d \n",&x);
-		validarFilialIntroduzido(x);
-	}
-}
-
-
-int validarMesIntroduzido(int x){
-	if(x>0 && x<13)return x;
-	else{
-		printf("Input Invalido.\n");
-		printf("Selecione um mes (entre 1 e 12) para seguir a opcao.\n");
-		scanf("%d \n",&x);
-		validarMesIntroduzido(x);
-	}
-
-}
-
-
-
-
-int validarLimiteIntroduzido(int x){
-	if(isDigit(x))return x;
-	else{
-		printf("Input Invalido.\n");
-		printf("Selecione um numero para seguir a opcao.\n");
-		scanf("%d \n",&x);
-		validarLimiteIntroduzido(x);
-	}
-}
-
-
-char validarIdentificacaoClienteIntroduzido(char* x){
-	if(isAlpha(x[0]) && isUpper(x[0]) && isDigit(x[1]) && isDigit(x[2]) && isDigit(x[3]) && isDigit(x[4]) && ((x[1]>=1 && x[1]<5) || (x[1]==5 && x[2]==0 && x[3]==0 && x[4]==0)) return x;
-	else{
-		printf("Input Invalido.\n");
-		printf("Selecione um cliente para seguir a opcao.\n");
-		scanf("%s \n",&x);
-		validarIdentificacaoClienteIntroduzido(x);
-	}
-}
-
-
-char validarIdentificacaoProdutoIntroduzido(char* x){
-	if(isAlpha(x[0]) && isUpper(x[0]) && isAlpha(x[1]) && isUpper(x[1]) && isDigit(x[2]) && isDigit(x[3]) && isDigit(x[4]) && isDigit(x[5]) && x[2]>=1) return x;
-	else{
-		printf("Input Invalido.\n");
-		printf("Selecione um produto para seguir a opcao.\n");
-		scanf("%s \n",&x);
-		validarIdentificacaoProdutoIntroduzido(x);
-	}
-}
-
-
-
-void destroySGV(SGV sgv){
-	remove(sgv);
-	printf("SGV destroido.\n");
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-int opcoesClientes(int x){
-	<?> getClientsOfAllBranches(SGV sgv);
-<?> getClientsAndProductsNeverBoughtCount(SGV sgv);
-<?> getClientFavoriteProduct(SGV sgv, char* clientID, int branch);
-
-	return 0;
-}
-
-int opcoesProdutos(int x){
-	<?> getProductsStartedByLetter(SGV sgv, char letter);
-<?> getProductSalesAndProfit(SGV sgv, char* productID, int month);
-<?> getProductsNeverBought(SGV sgv, int branchID);
-<?> getProductsBoughtByClient(SGV sgv, char* clientID);
-<?> getProductBuyers(SGV sgv, char* productID, int branch);
-
-	return 0;
-}
-
-int opcoesVendas(int x){
-	<?> getClientTopProfitProducts(SGV sgv, char* clientID, int limit);
-	<?> getTopSelledProducts(SGV sgv, int limit);
-	return 0;
-}
-*/
-
-
-
-
-
-int main()
 
