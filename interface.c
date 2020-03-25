@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include "interface.h"
 
 void iniciar(){
     printf("\n A iniciar: SGV - Sistema de Gestão de Vendas.\n"
@@ -359,3 +360,7 @@ int main() {
     return 0;
 }
 
+//maybe ??
+void destroySGV(SGV sgv){
+	remove(sgv);// a funçao remove apaga o ficheiro selecionado
+}
