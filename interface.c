@@ -5,6 +5,7 @@
 #include <ctype.h>
 #include "interface.h"
 
+
 void iniciar(){
     printf("\n A iniciar: SGV - Sistema de Gestão de Vendas.\n"
            "\n ... \n"
@@ -31,7 +32,7 @@ void menu(){
                "\n  0: Encerrar SGV - Sistema de Gestão de Vendas.\n\n  ");
 }
 
-//CARACTERES - Certo
+//CARACTERES - a primeira função valida o input, a segunda faz a recursividade
 
 char validaCaractere(char c){
     if (c>='A' && c<='Z') {
@@ -47,7 +48,7 @@ char caractereInvalido(){
     return validaCaractere(c);
 }
 
-//MES - Certo
+//MES - a primeira função valida o input, a segunda faz a recursividade
 
 int validaMes(int c){
     if (c>=1 && c<=12) {
@@ -63,7 +64,7 @@ int mesInvalido(){
     return validaMes(c);
 }
 
-//FILIAIS - Certo
+//FILIAIS - a primeira função valida o input, a segunda faz a recursividade
 
 int validaFilial(int c){
     if (c==1 || c==2 || c==3) {
@@ -79,7 +80,7 @@ int filialInvalida(){
     return validaFilial(c);
 }
 
-//FILIAL OU GLOBAL - Certo
+//FILIAL OU GLOBAL - a primeira função valida o input, a segunda faz a recursividade
 
 char validaFilialGlobal(char c){
     if (c=='F' || c=='G') {
@@ -96,7 +97,7 @@ char filialGlobalInvalida(){
     return validaFilialGlobal(c);
 }
 
-//NÚMERO - Certo
+//NÚMERO - a primeira função valida o input, a segunda faz a recursividade
 
 int validaNumero(int c){
     if (c>=1 && c<=15000) {
@@ -112,7 +113,7 @@ int numeroInvalido(){
     return validaMes(c);
 }
 
-//PRODUTOS - Certo
+//PRODUTOS - a primeira função valida o input, a segunda faz a recursividade
 
 char* validaProduto(char c[]){
     char* p = malloc(sizeof(char*));
@@ -133,7 +134,7 @@ char* produtoInvalido(){
     return validaProduto(prod);
 }
 
-//CLIENTES - Certo
+//CLIENTES - a primeira função valida o input, a segunda faz a recursividade
 
 char* validaCliente(char c[]){
     char* p = malloc(sizeof(char*));
@@ -153,6 +154,10 @@ char* clienteInvalido(){
     if (i>4) prod[0]='0';
     return validaCliente(prod);
 }
+
+
+//Função que permite a normal utilização do sistema; possui as várias opções do programa que levam para determinados quesitos e objetivos.
+
 
 void opcoes(){
     menu();
@@ -352,7 +357,7 @@ void opcoes(){
 }
 
 
-
+//função de teste main - a eliminar mais tarde!
 int main() {
 
     texto();

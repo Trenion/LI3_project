@@ -3,7 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 
-// Struct responsavel de salvar os dados de cada venda, utiliza pointers pois é mais facil usar os dados
+// Struct responsável de salvar os dados de cada venda; utiliza pointers pois é mais facil usar os dados.
 typedef struct
 {
     char* produtoC;
@@ -13,19 +13,19 @@ typedef struct
     char* clienteC;
     double* mesC;
     double* filialC;
-    //valC é uma variavel de validacao, se o cliente e o produto da compra sao validos e existem,
-    /// entao o seu valor incrementa a 2, é utilizada na ultima validacao das vendas 
+    //valC é uma variável de validação - se o cliente e o produto da compra são válidos e existem, então o seu valor incrementa a 2.
+    //É utilizada na última validação das vendas.
     int* valC;
 }compra,* CompraP;
 
-/*Struct responsavel de salvar uma lista com as structs 
-compra de todas as vendas e o tamanho da lista de structs*/ 
+//Struct responsável de salvar uma lista com as structs compra de todas as vendas e o tamanho da lista de structs
 typedef struct
 {
     CompraP* Compras;
     int* size;
 }listaCompras;
 
+//Struct responsável de fazer as tabelas de produtos
 typedef struct
 {
     char* produtoT;
@@ -132,8 +132,8 @@ int cmp(int a[], int b[], int c){
     }return r;
 }
 
-//funcao que faz multiplas ordenacoes utilizando o qsort entre posicoes obtidas pela aterior ordenacao
-//e gera uma matriz de posicoes para cada nivel de ordenacao pode ser testada na lista de vendas no ficheiro de texto
+//funcao que faz multiplas ordenacoes utilizando o qsort entre posicoes obtidas pela anterior ordenacao
+//e gera uma matriz de posicoes para cada nivel de ordenacao; pode ser testada na lista de vendas no ficheiro de texto
 void cmpStruct(listaCompras * l, int* caso, int** pos, int n){
     pos[0][0]=1;
     pos[1]=realloc(pos[1],2*sizeof(int));
@@ -358,9 +358,9 @@ CompraP ValidaV (char vendas[]) {
     while (subString!=NULL) {
         subString = strtok(NULL, " ");
         if (iteracoes==1) {
-             //--
+             
             float precoUnit;
-            precoUnit = atof (subString);//--
+            precoUnit = atof (subString);
             if (precoUnit<0 || precoUnit>=1000) {
                 return NULL;
             }
@@ -485,9 +485,9 @@ listaCompras* arrayV(FILE *fp) {
    return v;
 }
 
-//funcao que ardena a liste de vendas em funcao aos clientes e incrementa o valC 
+//funcao que ardena a lista de vendas em funcao aos clientes e incrementa o valC
 //da compra no caso do cliente existir na lista de clientes validos, 
-//para fin de teste a funcao faz print no file "V_C.txt"
+//para fim de teste a funcao faz print no file "V_C.txt"
 void valArrayVC(listaCompras* v,char** c){
     qsort((v->Compras),*(v->size), sizeof(CompraP), cmpStruct5);
     int i=0,j=0,k;
@@ -511,9 +511,9 @@ void valArrayVC(listaCompras* v,char** c){
 
 }
 
-//funcao que ardena a liste de vendas em funcao aos produtos e incrementa o valC 
+//funcao que ordena a lista de vendas em funcao aos produtos e incrementa o valC
 //da compra no caso do produto existir na lista de produtos validos, 
-//para fin de teste a funcao faz print no file "V_P.txt"
+//para fim de teste a funcao faz print no file "V_P.txt"
 void valArrayVP(listaCompras* v,char** c){
     qsort((v->Compras),*(v->size), sizeof(CompraP), cmpStruct1);
     int i=0,j=0,k;
@@ -538,7 +538,7 @@ void valArrayVP(listaCompras* v,char** c){
 
 //funcao que testa quais compras tem cliente e produto existente, cria uma nova lista com as compras validas
 //e retorna o pointer, 
-//para fin de teste a funcao faz print no file "V.txt" 
+//para fim de teste a funcao faz print no file "V.txt"
 listaCompras* validaFinal(listaCompras* v){
     int i = 0, j = 0,k = 0;
     listaCompras * l;
@@ -578,6 +578,7 @@ void printM(int** pos, int n){
     }fprintf(fp,"\n\n");
 }
 
+//funcao para ordenar de forma decrescente em funcao da faturação ou em funcao das quantidades
 listaCompras* aux(listaCompras* l,int a, int b, int x){
     listaCompras* lAux;
     lAux = malloc(sizeof(listaCompras));
@@ -650,6 +651,7 @@ listaCompras* aux(listaCompras* l,int a, int b, int x){
     return lAux;
 }
 
+
 listaCompras* ex2(listaCompras* l,char c){
     FILE* fex2;
     fex2 =  fopen("Ex2.txt","a");
@@ -665,6 +667,7 @@ listaCompras* ex2(listaCompras* l,char c){
     printListaC(lx,fex2);
     return lx;
 }
+
 
 float* ex3(listaCompras* l,int mes,char* p,char c){
     int i=0,q, pId0 = p[0]-65, pId1 = p[1]-65, ** pos = posMatrix(6),caso[]={10,11,6,1,4,7};
@@ -708,7 +711,7 @@ float* ex3(listaCompras* l,int mes,char* p,char c){
     }return f;    
 }
 
-//No momento, esta função só cria a lista com os produtos que não foram comprados!
+
 char** ex4(char** p, listaCompras* l, char c) {
     int j=0, f[]={0,0,0}, f3=0, qp=0;
     char **produtos,a[6],b[6];
@@ -766,7 +769,6 @@ char** ex4(char** p, listaCompras* l, char c) {
 }
 
 
-
 char** ex5(listaCompras* l){
     int j=0,k, ** pos = posMatrix(2),caso[]={5,7},a[6],b[6],c[6];
     char **clients;
@@ -794,6 +796,7 @@ char** ex5(listaCompras* l){
         fprintf(fex5,"%s\n",clients[i]);
     }return clients;
 }
+
 
 int* ex6(char** c,char** p,listaCompras* l){
     int* r,** posc = posMatrix(1),**posp = posMatrix(1),casop[]={1},casoc[]={5},j=0,qp=0,qc=0;
@@ -830,6 +833,7 @@ int* ex6(char** c,char** p,listaCompras* l){
     r[1]=qp;
     return r;
 }
+
 
 cell*** ex7(listaCompras* l,char* c){
     FILE* fp;
@@ -925,6 +929,7 @@ cell*** ex7(listaCompras* l,char* c){
     return table;
 }
 
+
 float* ex8(listaCompras* l,int mes1,int mes2){
     float* vendas;
     vendas = malloc(2*sizeof(float));
@@ -938,6 +943,7 @@ float* ex8(listaCompras* l,int mes1,int mes2){
         i++;
     }return vendas;
 }
+
 
 char*** ex9(listaCompras* l,char* p,int f){
     FILE* fp;
@@ -1036,6 +1042,7 @@ char*** ex9(listaCompras* l,char* p,int f){
     }return clientesPF;
 }
 
+
 char** ex10(listaCompras* l, char* c, int N){
     listaCompras* lAux;
     int i,j,k=0, ** pos = posMatrix(3),caso[]={50,6,5}, cId0 = c[0]-65,pc=0,q=0,** posAux = posMatrix(1),casoAux[]={8},a[6],b[6];
@@ -1080,6 +1087,7 @@ char** ex10(listaCompras* l, char* c, int N){
     }
     return produtos;
 }
+
 
 char** ex11(listaCompras* l, int N){
     
@@ -1157,6 +1165,7 @@ char** ex11(listaCompras* l, int N){
     return produtos;
 }
 
+
 char** ex12(listaCompras* l, char* c, int N){
     listaCompras* lAux;
     int i,j,k=0, ** pos = posMatrix(2),caso[]={50,5}, cId0 = c[0]-65,pc=0,q=0,** posAux = posMatrix(1),casoAux[]={8},a[6],b[6];
@@ -1204,6 +1213,7 @@ char** ex12(listaCompras* l, char* c, int N){
     }
     return produtos;
 }
+
 
 int main(){
     char** c,**p,*prod,**cEx5, **cEx4, **cEx10, **cEx11, **cEx12;
