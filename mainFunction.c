@@ -3,6 +3,16 @@
 #include <string.h>
 #include <ctype.h>
 
+//Variáveis globais para tamanho de ficheiros de linhas e ficheiros
+
+char* ficVendas;
+char* ficProdutos;
+char* ficClientes;
+int cLidos;
+int cValidos;
+int pLidos;
+int pValidos;
+
 // Struct responsável de salvar os dados de cada venda; utiliza pointers pois é mais facil usar os dados.
 typedef struct
 {
@@ -23,6 +33,7 @@ typedef struct
 {
     CompraP* Compras;
     int* size;
+    int* linhasLidas;
 }listaCompras;
 
 //Struct responsável de fazer as tabelas de produtos
@@ -69,7 +80,7 @@ int cmpStruct4(const void *a, const void *b)
 { 
     CompraP * ia = (CompraP*)a;
     CompraP * ib = (CompraP*)b;
-     return strcmp(((*ia)->tipoC),((*ib)->tipoC));
+    return strcmp(((*ia)->tipoC),((*ib)->tipoC));
 } 
 
 //funcao de comparacao para o qsort de struct compra em funcao aos clientes
@@ -418,10 +429,12 @@ CompraP ValidaV (char vendas[]) {
 
 //funcao que cria o array ordenado crescente dos produtos validos
 char** arrayP(FILE *fp,FILE *fp1){
+    pValidos=0; pLidos=0;
     char str[7],*s,**m;
     int i,j=0;
     m = malloc(j * sizeof(char*));
     while(fgets(str,7,fp)){
+        pLidos++;
         if (ValidaP(str)){
             s = malloc(7 * sizeof(char));
             for (i = 0; i < 6; i++){
@@ -436,15 +449,18 @@ char** arrayP(FILE *fp,FILE *fp1){
 //    }
     m = realloc(m,(j+1) * sizeof(char*));
     m[j]=NULL;
+    pValidos=j;
     return m;
 }
 
 //funcao que cria o array ordenado crescente dos clientes validos
 char** arrayC(FILE *fp,FILE *fp1){
+    cValidos=0; cLidos=0;
     char str[6],*s,**m;
     int i,j=0;
     m = malloc(j * sizeof(char*));
     while(fgets(str,6,fp)){
+        cLidos++;
         if (ValidaC(str)){
             s = malloc(6 * sizeof(char));
             for (i = 0; i < 5; i++){
@@ -459,6 +475,7 @@ char** arrayC(FILE *fp,FILE *fp1){
 //    }
     m = realloc(m,(j+1) * sizeof(char*));
     m[j]=NULL;
+    cValidos=j;
     return m;
 }
 
@@ -542,6 +559,7 @@ void valArrayVP(listaCompras* v,char** c){
 listaCompras* validaFinal(listaCompras* v){
     int i = 0, j = 0,k = 0;
     listaCompras * l;
+    *(l->linhasLidas)=0;
     l = malloc(sizeof(listaCompras));
     l->Compras= malloc(sizeof(CompraP));
     l->size= malloc(sizeof(int));
@@ -552,7 +570,11 @@ listaCompras* validaFinal(listaCompras* v){
         if (k==2){
             p = realloc(p,(j+1) * sizeof(CompraP));
             p[j++]=((v->Compras)[i]);
-        }i++;
+        }
+        else {
+            *(l->linhasLidas)++;
+        }
+        i++;
     }
     *(l->size) = j;
     (l->Compras) = p;
