@@ -368,4 +368,5 @@ int main() {
 //maybe ??
 void destroySGV(SGV sgv){
 	remove(sgv);// a funçao remove apaga o ficheiro selecionado
+	free(sgv);// supostamente liberta a memoria. é que a free recebe um pointer.
 }
