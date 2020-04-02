@@ -1111,80 +1111,71 @@ char** ex10(listaCompras* l, char* c, int N){
 }
 
 
-char** ex11(listaCompras* l, int N){
-    
+cell* ex11(listaCompras* l, int N){
     listaCompras* lAux;
-    int i=0,j1=0,k=0, h=0, ** pos = posMatrix(1),caso[]={1},** posAux = posMatrix(1),casoAux[]={8},a[6],b[6], pId0, pId1, m;
-    double num[6];
-    char **produtos;
-    
-    for (j1=0; j1<6;j1++) num[j1]=0;
-    produtos = malloc(h * sizeof(char*));
-    lAux=aux(l,0,*(l->size),12);
+    cell* most;
+    int k=0, ** pos = posMatrix(5),caso[]={10,11,1,7,5},q=0,** posAux = posMatrix(1),casoAux[]={8},a[N][6],b[6],unitM[N][6];
+    lAux=aux(l,0,*(l->size),10);
     cmpStruct(lAux, casoAux, posAux, 1);
-    printf("\n1\n");
-
-    for (k=0; k<N;k++) {
-        produtos = realloc(produtos,k * sizeof(char*));
-        produtos[k]=((*((lAux->Compras)+k))->produtoC);
-        k++;
-        printf("\n2\n");
+    most= malloc(N*sizeof(cell));
+    for (int i = 0; i < N; i++){
+        most[i].produtoT=malloc(sizeof(char*));
+        most[i].unidadesT=malloc(6*sizeof(int));
+        most[i].produtoT=((*((lAux->Compras)+i))->produtoC);
+        for (int j = 0; j < 6; j++){
+            a[i][j]=((*((lAux->Compras)+i))->produtoC)[j];
+        }
     }
-
-//    cmpStruct(l, caso, pos, 1);
-//    FILE * fex11;
-//    fex11 =  fopen("Ex11.txt","w");
-//    fprintf(fex11,"%d produtos mais comprados durante o ano: \n\n", N);
-    
-//    for(i=0; i<k; i++) {
-
-//        pId0 = (produtos[i])[0]-65; pId1 = (produtos[i])[1]-65;
-//        m = pos[2][26*pId0+pId1];
-//        for (j1 = 0; j1 < 6; j1++){
-//            b[j1]=(produtos[i])[j1];
-//            a[j1]=((*((l->Compras)+m))->produtoC)[j1];
-//        }
-//
-//        while(cmp(a,b,6)<0){
-//            m++;
-//            for (j1 = 0; j1 < 6; j1++){
-//                a[j1]=((*((l->Compras)+m))->produtoC)[j1];
-//            }
-//        }
-//
-//        while(cmp(a,b,6)==0){
-//            if (*((*((l->Compras)+m))->filialC)==1.0) {
-//                num[0]+=*((*((l->Compras)+m))->unidadesC);
-//                if (((*((l->Compras)+m))->clienteC)!=((*((l->Compras)+m-1))->clienteC)) {
-//                    num[1]+=1;
-//                }
-//            }
-//            else if (*((*((l->Compras)+m))->filialC)==2.0) {
-//                num[2]+=*((*((l->Compras)+m))->unidadesC);
-//                if (((*((l->Compras)+m))->clienteC)!=((*((l->Compras)+m-1))->clienteC)) {
-//                    num[3]+=1;
-//                }
-//            }
-//            else {
-//                num[4]+=*((*((l->Compras)+m))->unidadesC);
-//                if (((*((l->Compras)+m))->clienteC)!=((*((l->Compras)+m-1))->clienteC)) {
-//                    num[5]+=1;
-//                }
-//            }
-//            m++;
-//            for (int j1 = 0; j1 < 6; j1++){
-//                a[j1]=((*((l->Compras)+m))->produtoC)[j1];
-//            }
-//        }
-//
-//        fprintf(fex11,"\n Produto: %s\n\n", produtos[i]);
-//        fprintf(fex11,"Filial 1: %.0f clientes comparam, %.2f unidades vendidas \n", num[1], num[0]);
-//        fprintf(fex11,"Filial 2: %.0f clientes comparam, %.2f unidades vendidas \n", num[3], num[2]);
-//        fprintf(fex11,"Filial 3: %.0f clientes comparam, %.2f unidades vendidas \n\n", num[5], num[4]);
-//        for (j1=0; j1<6;j1++) num[j1]=0;
-//    }
-
-    return produtos;
+    cmpStruct(lAux, caso, pos, 5);
+    for (int i = 0; i < N; i++){
+        for (int j = 0; j < 6; j++){
+            unitM[i][j]=0;
+        }k=pos[3][(a[i][0]-65)*26+a[i][1]-65];
+        
+        for (int j = 0; j < 6; j++){
+            b[j]=((*((lAux->Compras)+k))->produtoC)[j];
+        }while(cmp(a[i],b,6)){
+            k++;
+            for (int j = 0; j < 6; j++){
+                b[j]=((*((lAux->Compras)+k))->produtoC)[j];
+            }
+        }int f1=*((*((lAux->Compras)+k))->filialC),c[6],d[6];
+        
+        for (int j = 0; j < 6; j++){
+            c[j]=((*((lAux->Compras)+k))->clienteC)[j];
+            d[j]=((*((lAux->Compras)+k))->clienteC)[j]; 
+        }
+        
+        while(!cmp(a[i],b,6)){
+            if(!cmp(c,d,6)){
+                if(!q)unitM[i][(f1-1)*2]+=1;
+            }else{
+                unitM[i][(f1-1)*2]+=1;
+                for (int j = 0; j < 6; j++){
+                    c[j]=((*((lAux->Compras)+k))->clienteC)[j];
+                }
+            }unitM[i][f1*2-1]+=*((*((lAux->Compras)+k))->unidadesC);
+            k++;
+            f1=*((*((lAux->Compras)+k))->filialC);
+            for (int j = 0; j < 6; j++){
+                b[j]=((*((lAux->Compras)+k))->produtoC)[j];
+                d[j]=((*((lAux->Compras)+k))->clienteC)[j];
+            }
+        }
+    }for (int i = 0; i < N; i++){
+        for (int j = 0; j < 6; j++){
+            ((most[i]).unidadesT)[j]=unitM[i][j];
+        }
+    }
+    FILE * fex11;
+    fex11 =  fopen("Ex11.txt","a");
+    fprintf(fex11,"Produtos mais vendidos no ano: \n");
+    for (int j = 0; j < N; j++){
+        fprintf(fex11,"Produto = %s\nfilial1: clientes = %d, unidades = %d.\nfilial2: clientes = %d, "
+            "unidades = %d.\nfilial3: clientes = %d, unidades = %d.\n",most[j].produtoT,((most[j]).unidadesT)[0],((most[j]).unidadesT)[1],
+            ((most[j]).unidadesT)[2],((most[j]).unidadesT)[3],((most[j]).unidadesT)[4],((most[j]).unidadesT)[5]);
+    }
+    return most;
 }
 
 
@@ -1238,9 +1229,9 @@ char** ex12(listaCompras* l, char* c, int N){
 
 
 int main(){
-    char** c,**p,*prod,**cEx5, **cEx4, **cEx10, **cEx11, **cEx12;
+    char** c,**p,*prod,**cEx5, **cEx4, **cEx10, **cEx12;
     listaCompras* v,*l,*lEx2,*lAux;
-    cell *** Ex7;
+    cell *** Ex7, *cEx11;
     float* fEx3,*fEx8;
     int mes,*cpEx6;
     FILE *fp,*fp_txt,*fc,*fc_txt,*fv,*fexV, *fexV1;
@@ -1277,7 +1268,7 @@ int main(){
     //printM(pos,n);
     fexV =  fopen("V.txt","w");
     printListaC(l,fexV);
-    lAux = aux(l,0,*(l->size),12);
+    lAux = aux(l,0,*(l->size),10);
     fexV1 =  fopen("V1.txt","w");
     printListaC(lAux,fexV1);
     
