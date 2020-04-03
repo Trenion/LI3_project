@@ -1,3 +1,5 @@
+//#include "mainFunction.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -5,10 +7,10 @@
 
 //Variáveis globais para tamanho de ficheiros de linhas e ficheiros
 
-extern int cLidos;
-extern int cValidos;
-extern int pLidos;
-extern int pValidos;
+int cLidos;
+int cValidos;
+int pLidos;
+int pValidos;
 
 // Struct responsável de salvar os dados de cada venda; utiliza pointers pois é mais facil usar os dados.
 typedef struct
@@ -30,7 +32,6 @@ typedef struct
 {
     CompraP* Compras;
     int* size;
-    int* linhasLidas;
 }listaCompras;
 
 //Struct responsável de fazer as tabelas de produtos
@@ -556,7 +557,6 @@ void valArrayVP(listaCompras* v,char** c){
 listaCompras* validaFinal(listaCompras* v){
     int i = 0, j = 0,k = 0;
     listaCompras * l;
-    *(l->linhasLidas)=0;
     l = malloc(sizeof(listaCompras));
     l->Compras= malloc(sizeof(CompraP));
     l->size= malloc(sizeof(int));
@@ -567,11 +567,7 @@ listaCompras* validaFinal(listaCompras* v){
         if (k==2){
             p = realloc(p,(j+1) * sizeof(CompraP));
             p[j++]=((v->Compras)[i]);
-        }
-        else {
-            *(l->linhasLidas)++;
-        }
-        i++;
+        } i++;
     }
     *(l->size) = j;
     (l->Compras) = p;
@@ -1237,8 +1233,10 @@ int main(){
     fc = fopen("Clientes.txt","r");
     //fc_txt = fopen("C.txt","a");
     fv = fopen("Vendas_1M.txt","r");
+    printf(" 1");
     p = arrayP(fp,fp_txt);
     c = arrayC(fc,fc_txt);
+    printf(" 1");
     v = arrayV(fv);
     valArrayVC(v,c);
     valArrayVP(v,p);
@@ -1257,17 +1255,17 @@ int main(){
     //cEx9 = ex9(l,p[13056],2);
     //char *t = "A1231";
     //cEx10 = ex10(l, t, 10);
-    cEx11 = ex11(l, 17);
+//    cEx11 = ex11(l, 17);
 //    cEx12 = ex12(l, t, 10);
     //int n=3;
     //int** pos = posMatrix(n),caso[]={50,6,5};
     //cmpStruct(l, caso, pos, n);
     //printM(pos,n);
-    fexV =  fopen("V.txt","w");
-    printListaC(l,fexV);
-    lAux = aux(l,0,*(l->size),10);
-    fexV1 =  fopen("V1.txt","w");
-    printListaC(lAux,fexV1);
+//    fexV =  fopen("V.txt","w");
+//    printListaC(l,fexV);
+//    lAux = aux(l,0,*(l->size),10);
+//    fexV1 =  fopen("V1.txt","w");
+//    printListaC(lAux,fexV1);
     
     return 0;
 }
