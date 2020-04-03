@@ -5,13 +5,10 @@
 
 //Variáveis globais para tamanho de ficheiros de linhas e ficheiros
 
-char* ficVendas;
-char* ficProdutos;
-char* ficClientes;
-int cLidos;
-int cValidos;
-int pLidos;
-int pValidos;
+extern int cLidos;
+extern int cValidos;
+extern int pLidos;
+extern int pValidos;
 
 // Struct responsável de salvar os dados de cada venda; utiliza pointers pois é mais facil usar os dados.
 typedef struct
